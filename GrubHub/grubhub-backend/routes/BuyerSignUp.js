@@ -20,15 +20,10 @@ router.post('/buyerSignUp',function (req, res) {
   console.log("Inside buyer signup post request");
   console.log("Request Body:");
   console.log(req.body);
-  //let formatEmail = req.body.email.toLowerCase().trim();
-  //console.log("formatted email:"+formatEmail);
   let password = req.body.password;
   console.log(password);
   let encryptedPassword = sha1(password);
   console.log("Encrypted password: "+encryptedPassword);
-  //let isFaculty = req.body.isFaculty;
-  //var user = isFaculty ? "faculty" : "student";
-  //console.log(user);
   var queryResult = [];
   const createUserIfNotPresent = async () => {
     queryResult = await LoginSignUpDBObj.checkIfEmailExists("buyerTable",req.body.emailId);
@@ -62,6 +57,7 @@ router.post('/buyerSignUp',function (req, res) {
   }
  
 });
+
 
 
 module.exports = router;

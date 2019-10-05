@@ -18,6 +18,7 @@ var buyerSignIn = require('./routes/BuyerSignIn')
 var ownerSignIn = require('./routes/OwnerSignIn')
 var dbConnection = require('./database/dbConnectionPool');
 var updateProfile = require('./routes/UpdateProfile')
+//var updatePicture = require('./routes/UpdateProfile')
 
 
 //use cors to allow cross origin resource sharing

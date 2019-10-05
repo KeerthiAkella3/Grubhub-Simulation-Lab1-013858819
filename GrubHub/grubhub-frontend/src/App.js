@@ -12,6 +12,7 @@ import BuyerSignUp from './components/SignUp/BuyerSignUpForm';
 import BuyerHomePage from './components/HomePages/BuyerHomePage';
 import BuyerUpdate from './components/Profiles/BuyerProfilePage'
 import OwnerUpdate from './components/Profiles/OwnerProfilePage'
+import BuyerPicture from './components/Profiles/BuyerPicture'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -28,6 +29,8 @@ function App() {
         <Route path="/BuyerHome" component={BuyerHomePage} />
         <Route path="/BuyerUpdate" component={BuyerUpdate} />
         <Route path="/OwnerUpdate" component={OwnerUpdate} />
+        <Route path="/BuyerPicture" component={BuyerPicture} />
+
       </div>
     </Router>
   );

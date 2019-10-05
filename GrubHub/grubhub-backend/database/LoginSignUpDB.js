@@ -140,4 +140,47 @@ module.exports = class LoginSignUpDB {
           }
     }
 
+    async addProfilePic(table, id, filename) {
+      let con = await dbConnection();
+      try {
+        await con.query("START TRANSACTION");
+        await con.query(`UPDATE ?? SET image = ? WHERE buyerId = ?`, [
+            table,
+            filename,
+            id
+          ]);
+        await con.query("COMMIT");
+        return true;
+      } catch (ex) {
+        await con.query("ROLLBACK");
+        console.log(ex);
+        throw ex;
+      } finally {
+        await con.release();
+        await con.destroy();
+      }
+    }
+
+    async getProfilepic(table,id){
+      let con = await dbConnection();
+      try {
+          await con.query("START TRANSACTION");
+          console.log("In get profile [piv")
+          let result = await con.query('SELECT image FROM ?? WHERE buyerId = ?', [table, id]);
+          await con.query("COMMIT");
+          console.log("result in db ")
+          console.log(result)
+          result = JSON.parse(JSON.stringify(result[0]));
+          console.log("result in db ")
+          console.log(result)
+          return result;
+        } catch (ex) {
+          console.log(ex);
+          throw ex;
+        } finally {
+          await con.release();
+          await con.destroy();
+        }
+      }
+
 }

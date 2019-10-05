@@ -13,6 +13,7 @@ class Home extends Component {
                     <Col xs={5}><a href="/BuyerUpdate" className="c-button">Buyer Update page</a></Col>
                     <br/>
                     <Col xs={5}><a href="/OwnerUpdate" className="c-button">Owner update page</a></Col>
+                    <a href="/BuyerPicture" className="c-button">Buyer Picture Update page</a>
                 </Row>
             </Container>
             </div>

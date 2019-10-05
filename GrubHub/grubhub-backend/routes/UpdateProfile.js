@@ -8,6 +8,19 @@ const mountRoutes = require('.');
 const LoginSignUpDB = require('../database/LoginSignUpDB');
 const LoginSignUpDBObj = new LoginSignUpDB();
 
+const storage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, './uploads/profilePictures');
+  },
+  filename: (req, file, callback) => {
+    fileExtension = file.originalname.split('.')[1];
+    console.log("fileExtension", fileExtension);
+    callback(null, file.originalname.split('.')[0] + '-' + Date.now() + '.' + fileExtension);
+  },
+});
+
+var upload = multer({ storage: storage });
+
 
 router.post('/updateProfile', function (req, res) {
   console.log("Inside profile put request");
@@ -121,98 +134,75 @@ router.get('/profile', function (req, res) {
 });
 
 
+router.post('/img/upload', upload.single('selectedFile'), function (req, res) {
+  console.log("Inside post profile img");
+  console.log("Request body:");
+  console.log(req.body);
+  console.log("filename", req.file.filename);
+  let filename = req.file.filename;
+  var queryResult = [];
 
-// router.post('/img/upload', upload.single('selectedFile'), function (req, res) {
-//   console.log("Inside post profile img");
-//   console.log("Request body:");
-//   console.log(req.body);
-//   console.log("filename", req.file.filename);
-//   let filename = req.file.filename;
-//   var queryResult = [];
+  let id = req.body.id;
+  let table = req.body.table;
+  const addProfilePic = async () => {
+    queryResult = await LoginSignUpDBObj.addProfilePic(table, id, filename);
+    if (queryResult) {
+      console.log("pic added");
+      res.status(200).json({ responseMessage: 'File successfully uploaded!' });
+    }
+    else {
+      res.status(400).json({ responseMessage: 'Record not found' });
+    }
+  }
+  try {
+    addProfilePic();
+  }
+  catch (err) {
+    console.log(err);
+    res.status(500).json({ responseMessage: 'Database not responding' });
+  }
+});
 
-//   let id = req.body.id;
-//   let role = req.body.role;
-//   const addProfilePic = async () => {
-//     queryResult = await profileDao.addProfilePic(role, id, filename);
-//     if (queryResult) {
-//       console.log("pic added");
-//       res.status(200).json({ responseMessage: 'File successfully uploaded!' });
-//     }
-//     else {
-//       res.status(400).json({ responseMessage: 'Record not found' });
-//     }
-//   }
-//   try {
-//     addProfilePic();
-//   }
-//   catch (err) {
-//     console.log(err);
-//     res.status(500).json({ responseMessage: 'Database not responding' });
-//   }
-// });
+router.get('/profile/img', function (req, res) {
+  console.log("Inside profile get request");
+  console.log("Request params:");
+  console.log(req.query);
+  let id = req.query.id;
+  let table = req.query.table;
+  
 
-// router.get('/profile/img', function (req, res) {
-//   console.log("Inside profile get request");
-//   console.log("Request params:");
-//   console.log(req.query);
-//   let id = req.query.id;
-//   let role = req.query.role;
-//   var queryResult = [];
-//   let filename = '';
-//   const getProfilepic = async () => {
-//     queryResult = await profileDao.getProfilepic(role, id);
-//     console.log(queryResult);
-//     function base64_encode(file) {
-//       var bitmap = fs.readFileSync(file);
-//       return new Buffer(bitmap).toString('base64');
-//     }
-//     if (queryResult[0]) {
-//       filename = queryResult[0].img;
-//       console.log(filename);
-//       let filePath = "C:/Users" + filename;
-//         var base64str = base64_encode(filePath);
-//         console.log(base64str);
-//         res.status(200).json({ base64str: base64str });
-//     }
-//     else {
-//       res.status(400).json({ responseMessage: 'Record not found' });
-//     }
-//   }
-//   try {
-//     getProfilepic();
-//   }
-//   catch (err) {
-//     console.log(err);
-//     res.status(500).json({ responseMessage: 'Database not responding' });
-//   }
-// });
+  var queryResult = [];
+  let filename = '';
+  const getProfilepic = async () => {
+    queryResult = await LoginSignUpDBObj.getProfilepic(table, id);
+    console.log("queryResult ");
+    console.log(queryResult.image)
+    function base64_encode(file) {
+      var bitmap = fs.readFileSync(file);
+      return new Buffer(bitmap).toString('base64');
+    }
+    if (queryResult) {
+      filename = queryResult.image;
+      console.log("filename")
+      console.log(filename);
+      let filePath = "/Users/Keerthy/Desktop/Fall/273/HW/Lab1/GrubHub/grubhub-backend/uploads/profilePictures/" + filename;
+        var base64str = base64_encode(filePath);
+        console.log(base64str);
+        res.status(200).json({ base64str: base64str });
+    }
+    else {
+      res.status(400).json({ responseMessage: 'Record not found' });
+    }
+  }
+  try {
+    getProfilepic();
+  }
+  catch (err) {
+    console.log(err);
+    res.status(500).json({ responseMessage: 'Database not responding' });
+  }
+});
 
 
-// router.put('/img', function (req, res) {
-//   console.log("Inside put profile img");
-//   console.log("Request body:");
-//   console.log(req.body);
-//   var queryResult = [];
-
-//   let id = req.body.id;
-//   let role = req.body.role;
-//   const removeProfilePic = async () => {
-//     queryResult = await profileDao.addProfilePic(role, id, null);
-//     if (queryResult) {
-//       console.log("pic removed");
-//       res.status(200).json({ responseMessage: 'Image successfully removed!' });
-//     }
-//     else {
-//       res.status(400).json({ responseMessage: 'Record not found' });
-//     }
-//   }
-//   try {
-//     removeProfilePic();
-//   }
-//   catch (err) {
-//     console.log(err);
-//     res.status(500).json({ responseMessage: 'Database not responding' });
-//   }
-// });
 
 module.exports = router;

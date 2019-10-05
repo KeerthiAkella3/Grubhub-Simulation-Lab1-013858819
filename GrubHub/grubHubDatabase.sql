@@ -67,3 +67,9 @@ select * from ownerTable;
 
 ALTER TABLE ownerTable
 ADD phoneNumber int(20);
+
+ALTER TABLE ownerTable
+ADD image varchar(200);
+
+ALTER TABLE buyerTable
+ADD image varchar(200);
