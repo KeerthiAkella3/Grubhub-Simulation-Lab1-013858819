@@ -40,7 +40,7 @@ class OwnerPicture extends Component {
             axios({
                 method: 'get',
                 url: 'http://localhost:3001/profile/img',
-                params: { "id": id, "table": "ownerTable" },
+                params: { "id": id, "table": "restaurantTable" },
                 config: { headers: { 'Content-Type': 'application/json' } }
             })
                 .then((response) => {
@@ -86,7 +86,7 @@ class OwnerPicture extends Component {
         var emailId = cookie.load('cookie1');
         let formData = new FormData();
         formData.append('id', id);
-        formData.append('table', "ownerTable");
+        formData.append('table', "restaurantTable");
         formData.append('selectedFile', e.target.files[0]);
 
         await axios({
@@ -107,7 +107,7 @@ class OwnerPicture extends Component {
                 axios({
                     method: 'get',
                     url: 'http://localhost:3001/profile/img',
-                    params: { "id": id, "table": "ownerTable" },
+                    params: { "id": id, "table": "restaurantTable" },
                     config: { headers: { 'Content-Type': 'application/json' } }
                 })
                     .then((response) => {
@@ -141,7 +141,7 @@ class OwnerPicture extends Component {
         var emailId = cookie.load('cookie1');
         let formData = new FormData();
         formData.append('id', id);
-        formData.append('table', "ownerTable");
+        formData.append('table', "restaurantTable");
         formData.append('selectedFile', e.target.files[0]);
 
         await axios({

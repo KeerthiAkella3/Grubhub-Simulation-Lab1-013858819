@@ -69,7 +69,7 @@ class OwnerSignInForm extends Component {
     render() {
         var nextpage = null
         if (this.state.SignedUpFlag === true) {
-            nextpage = <Redirect to ="/home"/>
+            nextpage = <Redirect to ="/ownerHomePage"/>
         }
         return (
             <div>

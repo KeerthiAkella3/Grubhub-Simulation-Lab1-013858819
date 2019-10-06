@@ -1,5 +1,7 @@
 .App {
-  text-align: center;
+  height: 100%;
+  width: 100%;
+  background-color: #f7f7f7;
 }
 
 .App-logo {
@@ -40,12 +42,14 @@
   line-height: 50px;
 }
 .main-div {
-  background: #ffffff none repeat scroll 0 0;
+  background-color: grey;
+  color: grey;
   border-radius: 2px;
   margin: 10px auto 30px;
   max-width: 38%;
   padding: 50px 70px 70px 71px;
   border: 2px solid black;
+  height: 100%;
 }
 
 .login-form .form-group {
@@ -129,14 +133,13 @@
 }
 
 .mainNavBrand-logo {
-	/*
-	background-size: cover;
+	
+	background-size: url(./images/grubhub-full-logo.svg);
     background-repeat: no-repeat;
     display: block;
     width: 100px;
     height: 21px;
 	transition: none;
-	*/
 	font-size: 25px;
 	color: white;
 }

@@ -31,7 +31,7 @@ router.post('/updateProfile', function (req, res) {
   let table = req.body.table;
   let id = req.body.id
 
-  console.log("email Id and tablename "+req.body.emailId +"  "+req.body.table )
+  console.log("email Id and tablename " + req.body.emailId + "  " + req.body.table)
 
   var queryResult = [];
   var inputData = {
@@ -39,7 +39,7 @@ router.post('/updateProfile', function (req, res) {
     "emailId": req.body.emailId,
     "phonenumber": req.body.phoneNumber,
     "Address": req.body.Address,
-    "id":req.body.id
+    "id": req.body.id
 
   }
   console.log("in input data update buyer   " + inputData.buyerName)
@@ -70,17 +70,16 @@ router.post('/updateOwner', function (req, res) {
   let table = req.body.table;
   let id = req.body.id
 
-  console.log("email Id and tablename "+req.body.emailId +"  "+req.body.table )
+  console.log("email Id and tablename " + req.body.emailId + "  " + req.body.table)
 
   var queryResult = [];
   var inputData = {
-    "ownerName": req.body.ownerName,
-    "emailId": req.body.emailId,
-    "phonenumber": req.body.phoneNumber,
-    "Address": req.body.Address,
-    "restaurentName": req.body.restaurentName,
-    "cuisine": req.body.cuisine,
-    "id":req.body.id
+    "restaurantName": req.body.ownerName,
+    "restaurantEmailId": req.body.emailId,
+    "restaurantPhone": req.body.phoneNumber,
+    "restaurantAddress": req.body.Address,
+    "restaurantCuisine": req.body.cuisine,
+    "restaurantId": req.body.id
 
   }
   console.log("in input data update buyer   " + inputData.ownerName)
@@ -110,15 +109,30 @@ router.get('/profile', function (req, res) {
   console.log(req.query);
   let emailId = req.query.emailId;
   var queryResult = [];
+  let table = req.query.table;
   const getProfileData = async () => {
-    queryResult = await LoginSignUpDBObj.checkIfUserExists(req.query.table, emailId);
+    if (table === "restaurantTable") {
+      queryResult = await LoginSignUpDBObj.checkIfRestaurantExists(table, emailId);
+    } else {
+      queryResult = await LoginSignUpDBObj.checkIfBuyerExists(table, emailId);
+    }
     if (queryResult[0]) {
-      if (queryResult[0].emailId != null) {
-        console.log("Data Found!");
-        let obj = queryResult[0];
-        delete obj['password'];
-        Object.keys(obj).forEach(k => (!obj[k] && obj[k] !== undefined) && delete obj[k]);
-        res.status(200).json(obj);
+      if (table === "restaurantTable") {
+        if (queryResult[0].restaurantEmailId != null) {
+          console.log("Data Found!");
+          let obj = queryResult[0];
+          delete obj['password'];
+          Object.keys(obj).forEach(k => (!obj[k] && obj[k] !== undefined) && delete obj[k]);
+          res.status(200).json(obj);
+        }
+      } else {
+        if (queryResult[0].buyerEmailId != null) {
+          console.log("Data Found!");
+          let obj = queryResult[0];
+          delete obj['password'];
+          Object.keys(obj).forEach(k => (!obj[k] && obj[k] !== undefined) && delete obj[k]);
+          res.status(200).json(obj);
+        }
       }
     }
     else {
@@ -142,11 +156,14 @@ router.post('/img/upload', upload.single('selectedFile'), function (req, res) {
   console.log("filename", req.file.filename);
   let filename = req.file.filename;
   var queryResult = [];
-
   let id = req.body.id;
   let table = req.body.table;
   const addProfilePic = async () => {
-    queryResult = await LoginSignUpDBObj.addProfilePic(table, id, filename);
+    if (table === "restaurantTable") {
+      queryResult = await LoginSignUpDBObj.addRestaurantProfilePic(table, id, filename);
+    } else {
+      queryResult = await LoginSignUpDBObj.addBuyerProfilePic(table, id, filename);
+    }
     if (queryResult) {
       console.log("pic added");
       res.status(200).json({ responseMessage: 'File successfully uploaded!' });
@@ -170,12 +187,14 @@ router.get('/profile/img', function (req, res) {
   console.log(req.query);
   let id = req.query.id;
   let table = req.query.table;
-  
-
-  var queryResult = [];
+  let queryResult = [];
   let filename = '';
   const getProfilepic = async () => {
-    queryResult = await LoginSignUpDBObj.getProfilepic(table, id);
+    if (table === "restaurantTable") {
+      queryResult = await LoginSignUpDBObj.getRestaurantProfilepic(table, id);
+    } else if (table === "buyerTable") {
+      queryResult = await LoginSignUpDBObj.getBuyerProfilepic(table, id);
+    }
     console.log("queryResult ");
     console.log(queryResult.image)
     function base64_encode(file) {
@@ -183,15 +202,19 @@ router.get('/profile/img', function (req, res) {
       return new Buffer(bitmap).toString('base64');
     }
     if (queryResult) {
-      filename = queryResult.image;
+      if (table === "restaurantTable") {
+        filename = queryResult.restaurantImage;
+      } else {
+        filename = queryResult.buyerImage;
+      }
       console.log("filename")
       console.log(filename);
       let filePath = path.join(__dirname, "../uploads/profilePictures", filename);
-      console.log("file path.."+filePath);
+      console.log("file path.." + filePath);
       //let filePath = "/Users/Keerthy/Desktop/Fall/273/HW/Lab1/Lab-013858819/Lab1-013858819/GrubHub/grubhub-backend/uploads/profilePictures/" + filename;
-        var base64str = base64_encode(filePath);
-        console.log(base64str);
-        res.status(200).json({ base64str: base64str });
+      var base64str = base64_encode(filePath);
+      console.log(base64str);
+      res.status(200).json({ base64str: base64str });
     }
     else {
       res.status(400).json({ responseMessage: 'Record not found' });

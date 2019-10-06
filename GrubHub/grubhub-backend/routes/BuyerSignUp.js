@@ -26,10 +26,10 @@ router.post('/buyerSignUp',function (req, res) {
   console.log("Encrypted password: "+encryptedPassword);
   var queryResult = [];
   const createUserIfNotPresent = async () => {
-    queryResult = await LoginSignUpDBObj.checkIfEmailExists("buyerTable",req.body.emailId);
+    queryResult = await LoginSignUpDBObj.checkIfBuyerExists("buyerTable",req.body.emailId);
     //console.log(" buyersign up query result"+queryResult);
     if(queryResult[0]){
-      if(queryResult[0].email != null){
+      if(queryResult[0].buyerEmailId != null){
         console.log("User already exists!");
         res.status(200).json({responseMessage: 'User already exists!'});
       }
@@ -37,10 +37,10 @@ router.post('/buyerSignUp',function (req, res) {
     else{
       var inputData = {
         "buyerName": req.body.buyerName,
-        "emailId": req.body.emailId,
-        "userPassword": encryptedPassword,
-        "phoneNumber": req.body.phoneNumber,
-        "Address": req.body.zipcode
+        "buyerEmailId": req.body.emailId,
+        "buyerPassword": encryptedPassword,
+        "buyerPhone": req.body.phoneNumber,
+        "buyerAddress": req.body.zipcode
       }
       queryResult = await LoginSignUpDBObj.createNewUser("buyerTable",inputData);
       console.log("User Added");

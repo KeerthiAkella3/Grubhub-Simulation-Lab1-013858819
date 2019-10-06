@@ -4,7 +4,7 @@ var dbConfig = {
     connectionLimit: 500,
     host: 'localhost',
     user: 'root',
-    password: 'root1234',
+    password: '123456789',
     database: 'grubHub',
     port: 3306,
     debug: false,
@@ -16,7 +16,7 @@ module.exports = async () => {
     return new Promise(async (resolve, reject) => {
         pool.getConnection().then(function (con) {
             if (con) {
-                console.log("db connected yaay")
+                console.log("Connection to DB Successful");
                 resolve(con)
             }
         }).catch(function (err) {

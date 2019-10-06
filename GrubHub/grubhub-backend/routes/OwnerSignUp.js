@@ -26,10 +26,10 @@ router.post('/ownerSignUp',function (req, res) {
   console.log("Encrypted password: "+encryptedPassword);
   var queryResult = [];
   const createUserIfNotPresent = async () => {
-    queryResult = await LoginSignUpDBObj.checkIfEmailExists("ownerTable",req.body.emailId);
+    queryResult = await LoginSignUpDBObj.checkIfRestaurantExists("restaurantTable", req.body.emailId);
     console.log(queryResult);
     if(queryResult[0]){
-      if(queryResult[0].email != null){
+      if(queryResult[0].restaurantEmailId != null){
         console.log("User already exists!");
         res.status(200).json({responseMessage: 'User already exists!'});
       }
@@ -45,16 +45,15 @@ router.post('/ownerSignUp',function (req, res) {
   //   phoneNumber
     else{
       var inputData = {
-        "ownerName": req.body.ownerName,
-        "emailId": req.body.emailId,
-        "userPassword": encryptedPassword,
-        "phoneNumber": req.body.phoneNumber,
-        "restaurentName": req.body.restaurentName,
-        "Address":req.body.Address,
-        "cuisine": req.body.cuisine
-
+        "restaurantName": req.body.ownerName,
+        "restaurantEmailId": req.body.emailId,
+        "restaurantPassword": encryptedPassword,
+        "restaurantPhone": req.body.phoneNumber,
+        "restaurantAddress":req.body.Address,
+        "restaurantCuisine": req.body.cuisine
       }
-      queryResult = await LoginSignUpDBObj.createNewUser("ownerTable",inputData);
+
+      queryResult = await LoginSignUpDBObj.createNewUser("restaurantTable", inputData);
       console.log("User Added");
       res.status(200).json({responseMessage: 'Successfully Added!'});
     }

@@ -49,7 +49,7 @@ export class OwnerProfilePage extends Component {
             axios({
                 method: 'get',
                 url: 'http://localhost:3001/profile',
-                params: { "emailId": emailId, "table": "ownerTable" },
+                params: { "emailId": emailId, "table": "restaurantTable" },
                 config: { headers: { 'Content-Type': 'application/json' } }
             })
                 .then((response) => {
@@ -112,7 +112,7 @@ export class OwnerProfilePage extends Component {
             method: 'post',
             url: 'http://localhost:3001/updateOwner',
             data: {
-                "emailId": emailId, "table": "ownerTable",
+                "emailId": emailId, "table": "restaurantTable",
                 "ownerName": formData.get('ownerName'),
                 "phoneNumber": formData.get('phoneNumber'),
                 "Address": formData.get('Address'),
