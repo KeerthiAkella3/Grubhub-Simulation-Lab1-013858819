@@ -87,7 +87,7 @@ CREATE TABLE restaurantTable(
 	restaurantName VARCHAR(100) NOT NULL,
 	restaurantEmailId VARCHAR(40) NOT NULL,
 	restaurantPassword VARCHAR(100) NOT NULL,
-    restaurantAddress int(5) NOT NULL,
+    restaurantAddress VARCHAR(50) NOT NULL,
 	restaurantCuisine VARCHAR(40) NOT NULL,
     restaurantPhone INT(15) NOT NULL,
 	restaurantImage VARCHAR(50),

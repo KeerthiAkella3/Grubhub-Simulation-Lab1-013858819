@@ -16,8 +16,14 @@ export class SideNavInstance extends Component {
         this.onOrderClickHandler = this.onOrderClickHandler.bind(this)
         this.onProfileClickHandler = this.onProfileClickHandler.bind(this)
         this.onMenuClickHandler = this.onMenuClickHandler.bind(this)
+        this.logout = this.logout.bind(this);
     }
 
+    logout = () => {
+        localStorage.clear();
+        console.log("All cookies removed!");
+        window.location = "/";
+    }
 
     onOrderClickHandler = (e) => {
         this.props.onOptionClick("Orders");
@@ -44,7 +50,7 @@ export class SideNavInstance extends Component {
                         <Nav>
                             <Nav.Item eventKey="1">
                                 <img useMap="#" src={GrubHubForRestaurants} alt="GH Restaurant" style={{
-                                    height:"60px",
+                                    height: "60px",
                                     width: "100%",
                                 }} />
                             </Nav.Item>
@@ -56,6 +62,9 @@ export class SideNavInstance extends Component {
                             </Nav.Item>
                             <Nav.Item eventKey="4" href="#" onClick={this.onProfileClickHandler} icon={<Icon icon="user-info" />}>
                                 Profile
+                            </Nav.Item>
+                            <Nav.Item eventKey="4" href="#" onClick={this.logout} icon={<Icon icon="sign-out" />}>
+                                Logout
                             </Nav.Item>
                             {/* <Dropdown eventKey="3" title="Advanced" icon={<Icon icon="magic" />}>
                                 <Dropdown.Item eventKey="3-1">Geo</Dropdown.Item>

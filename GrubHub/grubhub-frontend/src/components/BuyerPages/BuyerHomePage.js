@@ -28,7 +28,14 @@ export class BuyerHomePage extends Component {
             searchResults: []
         }
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleLogout = this.handleLogout.bind(this);
         this.searchItemChangeHandler = this.searchItemChangeHandler.bind(this);
+    }
+
+    handleLogout = (e) => {
+        localStorage.clear();
+        console.log("All cookies removed!");
+        window.location = "/";
     }
 
     handleSubmit = (e) => {
@@ -168,6 +175,7 @@ export class BuyerHomePage extends Component {
                                 <ButtonGroup horizontal="true">
                                     <IconButton circle={true} onClick={this.handleSubmit} className="btn btn-outline-secondary" icon={<Icon icon="first-order" />} />
                                     <IconButton circle={true} onClick={this.handleSubmit} className="btn btn-outline-secondary" icon={<Icon icon="user" />} />
+                                    <IconButton circle={true} onClick={this.handleLogout} className="btn btn-outline-secondary" icon={<Icon icon="sign-out" />} />
                                 </ButtonGroup>
 
                             </Col>
