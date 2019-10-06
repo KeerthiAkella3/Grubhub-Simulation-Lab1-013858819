@@ -73,3 +73,10 @@ ADD image varchar(200);
 
 ALTER TABLE buyerTable
 ADD image varchar(200);
+
+ALTER TABLE buyerTable CHANGE buyerId id INT NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE ownerTable CHANGE ownerId id INT NOT NULL AUTO_INCREMENT;
+
+
+ALTER TABLE ownerTable CHANGE ownerEMailId emailId varchar(50);

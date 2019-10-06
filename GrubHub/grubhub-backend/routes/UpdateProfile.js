@@ -7,6 +7,7 @@ const multer = require('multer');
 const mountRoutes = require('.');
 const LoginSignUpDB = require('../database/LoginSignUpDB');
 const LoginSignUpDBObj = new LoginSignUpDB();
+const path = require('path');
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
@@ -185,7 +186,9 @@ router.get('/profile/img', function (req, res) {
       filename = queryResult.image;
       console.log("filename")
       console.log(filename);
-      let filePath = "/Users/Keerthy/Desktop/Fall/273/HW/Lab1/GrubHub/grubhub-backend/uploads/profilePictures/" + filename;
+      let filePath = path.join(__dirname, "../uploads/profilePictures", filename);
+      console.log("file path.."+filePath);
+      //let filePath = "/Users/Keerthy/Desktop/Fall/273/HW/Lab1/Lab-013858819/Lab1-013858819/GrubHub/grubhub-backend/uploads/profilePictures/" + filename;
         var base64str = base64_encode(filePath);
         console.log(base64str);
         res.status(200).json({ base64str: base64str });

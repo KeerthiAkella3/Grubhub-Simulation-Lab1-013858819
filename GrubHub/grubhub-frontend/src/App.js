@@ -13,6 +13,8 @@ import BuyerHomePage from './components/HomePages/BuyerHomePage';
 import BuyerUpdate from './components/Profiles/BuyerProfilePage'
 import OwnerUpdate from './components/Profiles/OwnerProfilePage'
 import BuyerPicture from './components/Profiles/BuyerPicture'
+import OwnerPicture from './components/Profiles/OwnerPicture'
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -30,6 +32,7 @@ function App() {
         <Route path="/BuyerUpdate" component={BuyerUpdate} />
         <Route path="/OwnerUpdate" component={OwnerUpdate} />
         <Route path="/BuyerPicture" component={BuyerPicture} />
+        <Route path="/OwnerPicture" component={OwnerPicture} />
 
       </div>
     </Router>

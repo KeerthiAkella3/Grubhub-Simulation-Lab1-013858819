@@ -93,7 +93,7 @@ module.exports = class LoginSignUpDB {
         try {
             await con.query("START TRANSACTION");
             await con.query(`UPDATE ?? SET buyerName = ?, phonenumber = ?, Address = ?
-            WHERE buyerId = ?`,[
+            WHERE id = ?`,[
                   table,
                   inputData.buyerName,
                   //inputData.img,
@@ -119,7 +119,7 @@ module.exports = class LoginSignUpDB {
         try {
             await con.query("START TRANSACTION");
             await con.query(`UPDATE ?? SET ownerName = ?, phonenumber = ?, Address = ?
-            WHERE ownerId = ?`,[
+            WHERE id = ?`,[
                   table,
                   inputData.ownerName,
                   //inputData.img,
@@ -144,7 +144,7 @@ module.exports = class LoginSignUpDB {
       let con = await dbConnection();
       try {
         await con.query("START TRANSACTION");
-        await con.query(`UPDATE ?? SET image = ? WHERE buyerId = ?`, [
+        await con.query(`UPDATE ?? SET image = ? WHERE id = ?`, [
             table,
             filename,
             id
@@ -166,7 +166,7 @@ module.exports = class LoginSignUpDB {
       try {
           await con.query("START TRANSACTION");
           console.log("In get profile [piv")
-          let result = await con.query('SELECT image FROM ?? WHERE buyerId = ?', [table, id]);
+          let result = await con.query('SELECT image FROM ?? WHERE id = ?', [table, id]);
           await con.query("COMMIT");
           console.log("result in db ")
           console.log(result)

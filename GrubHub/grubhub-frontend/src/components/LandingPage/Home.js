@@ -14,6 +14,7 @@ class Home extends Component {
                     <br/>
                     <Col xs={5}><a href="/OwnerUpdate" className="c-button">Owner update page</a></Col>
                     <a href="/BuyerPicture" className="c-button">Buyer Picture Update page</a>
+                    <a href="/OwnerPicture" className="c-button">Owner Picture Update page</a>
                 </Row>
             </Container>
             </div>

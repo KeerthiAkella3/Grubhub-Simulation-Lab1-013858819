@@ -39,7 +39,7 @@ router.post('/buyerSignIn',function (req, res) {
   if (queryResult[0].buyerName != null) {
     console.log("User exists! Valid credentials");
     res.cookie('cookie1',formatEmail,{maxAge: 900000, httpOnly: false, path : '/'});
-    res.cookie('cookie2',queryResult[0].buyerId,{maxAge: 900000, httpOnly: false, path : '/'});
+    res.cookie('cookie2',queryResult[0].id,{maxAge: 900000, httpOnly: false, path : '/'});
     res.cookie('cookie3',queryResult[0].buyerName,{maxAge: 900000, httpOnly: false, path : '/'});
     console.log("Added cookies");
     req.session.formatEmail = queryResult[0].emailId;
