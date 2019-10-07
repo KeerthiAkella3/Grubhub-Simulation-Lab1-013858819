@@ -1,6 +1,7 @@
 # Lab1-013858819
 CMPE 273 
 Calculator Application
+
 Steps to run
 To run backend
 
@@ -18,6 +19,7 @@ Execute command 'npm start' This will start the application in your default serv
 
 
 Grubhub Application
+
 Steps to run
 To run backend
 
