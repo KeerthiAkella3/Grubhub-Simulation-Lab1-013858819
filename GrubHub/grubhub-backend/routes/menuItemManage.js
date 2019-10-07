@@ -2,7 +2,22 @@ const express = require('express');
 const mountRoutes = require('.');
 const LoginSignUpDB = require('../database/LoginSignUpDB');
 const LoginSignUpDBObj = new LoginSignUpDB();
+const path = require('path');
+var fs = require('fs');
+const multer = require('multer');
 
+const storage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, './uploads/profilePictures');
+  },
+  filename: (req, file, callback) => {
+    fileExtension = file.originalname.split('.')[1];
+    console.log("fileExtension", fileExtension);
+    callback(null, file.originalname.split('.')[0] + '-' + Date.now() + '.' + fileExtension);
+  },
+});
+
+var upload = multer({ storage: storage });
 var app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
@@ -39,8 +54,28 @@ router.get('/menu', function (req, res) {
     if (getMenuResult) {
       for (index = 0; index < getMenuResult.length; index++) {
         let anItem = getMenuResult[index];
+        let imageFilepath = undefined;
+        let base64Image = undefined;
         console.log("Got this from DB");
         console.log(anItem);
+        if (anItem.menuItemImage === null || anItem.menuItemImage === undefined || anItem.menuItemImage.length === 0) {
+          // res.status(400).json({ responseMessage: 'Record not found' });
+          console.log('No Image found for this item');
+        } else if (typeof anItem.menuItemImage === "string") {
+          console.log(anItem.menuItemImage);
+          imageFilepath = path.join(__dirname, "../uploads/profilePictures", anItem.menuItemImage);
+          console.log("file path.." + imageFilepath);
+        } else {
+          console.log('invalid image');
+        }
+        if (imageFilepath !== undefined) {
+          try {
+            base64Image = base64_encode(imageFilepath);
+          } catch (err) {
+            console.log("Unable to read image");
+          }
+        }
+          
         resItem = {
           itemId: anItem.menuItemId,
           itemName: anItem.menuItemName,
@@ -48,6 +83,7 @@ router.get('/menu', function (req, res) {
           itemPrice: anItem.menuItemPrice,
           itemSection: anItem.menuItemSection,
           itemCuisine: anItem.menuItemCuisine,
+          itemImage: base64Image,
         }
         menuList.push(resItem);
       }
@@ -185,6 +221,11 @@ router.post('/restaurantMenu', function (req, res) {
     res.status(503).json({ responseMessage: 'Database not responding' });
   }
 });
+
+function base64_encode(file) {
+  var bitmap = fs.readFileSync(file);
+  return new Buffer(bitmap).toString('base64');
+}
 
 /*
   * Call this endpoint from Restaurant Owner, when restaurant Owner is managing status of order

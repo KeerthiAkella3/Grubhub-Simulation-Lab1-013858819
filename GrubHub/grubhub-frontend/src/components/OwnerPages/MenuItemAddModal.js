@@ -18,6 +18,14 @@ export class MenuItemAddModal extends Component {
         }
 
         this.handleClose = this.handleClose.bind(this);
+        this.onPicUpload = this.onPicUpload.bind(this);
+        this.itemDescChangeHandler = this.itemDescChangeHandler.bind(this);
+        this.itemNameChangeHandler = this.itemNameChangeHandler.bind(this);
+        this.itemImageChangeHandler = this.itemImageChangeHandler.bind(this);
+        this.itemNameChangeHandler = this.itemNameChangeHandler.bind(this);
+        this.itemSectionChangeHandler = this.itemSectionChangeHandler.bind(this);
+        this.itemPriceChangeHandler = this.itemPriceChangeHandler.bind(this);
+        this.handleSave = this.handleSave.bind(this);
     }
 
     itemNameChangeHandler = (e) => {
@@ -42,11 +50,11 @@ export class MenuItemAddModal extends Component {
         if (e.target.id == "lunch") {
             this.setState({
                 itemSection: "Lunch",
-            })    
+            })
         } else if (e.target.id == "breakfast") {
             this.setState({
                 itemSection: "Breakfast",
-            })    
+            })
         } else {
             this.setState({
                 itemSection: "Appetizers",
@@ -76,6 +84,11 @@ export class MenuItemAddModal extends Component {
         saveCallback(this.state);
     }
 
+    onPicUpload = (e) => {
+        this.setState({
+            itemImage: e.target.files[0],
+        })
+    }
 
     // CREATE TABLE restaurantMenuTable(
     //     menuItemId INT NOT NULL AUTO_INCREMENT,
@@ -89,6 +102,16 @@ export class MenuItemAddModal extends Component {
     //     PRIMARY KEY(menuItemId),
     // );
     render() {
+
+        let imageDiv = (<div className='buttons fadein'>
+            <div className='button'>
+                <label htmlFor='single'>
+                    <img src={this.state.restaurantImage} alt="Profile pic" height="40px" width="60px" ></img>
+                </label>
+                {/* <input type='file' id='single' name="selectedFile" onChange={this.onPicUpload} style={{ height: "0px", width: "0px" }} accept="image/x-png,image/gif,image/jpeg" /> */}
+            </div>
+        </div>);
+
         return (
             <div>
                 <Modal show={this.state.show} onHide={(e) => {
@@ -107,10 +130,6 @@ export class MenuItemAddModal extends Component {
                                 <Form.Label>Item Description</Form.Label>
                                 <Form.Control onChange={this.itemDescChangeHandler} type="text" placeholder="item name" />
                             </Form.Group>
-                            <Form.Group controlId="formItemImage">
-                                <Form.Label>Item Image</Form.Label>
-                                <Form.Control onChange={this.itemImageChangeHandler} type="image" />
-                            </Form.Group>
                             <Form.Group controlId="formBasicPrice">
                                 <Form.Label>Item Price</Form.Label>
                                 <Form.Control onChange={this.itemPriceChangeHandler} type="text" placeholder="0.00" />
@@ -120,6 +139,12 @@ export class MenuItemAddModal extends Component {
                                 <Form.Check onChange={this.itemSectionChangeHandler} id="appetizer" type="radio" label="Appetizers" />
                                 <Form.Check onChange={this.itemSectionChangeHandler} id="lunch" type="radio" label="Lunch" />
                                 <Form.Check onChange={this.itemSectionChangeHandler} id="breakfast" type="radio" label="Breakfast" />
+                            </Form.Group>
+
+                            <Form.Group controlId='buyerImage'>
+                                <Form.Label>Menu Item Image</Form.Label>
+                                {imageDiv}
+                                <Form.Control as='input' type='file' onChange={this.onPicUpload} />
                             </Form.Group>
                             {/* <Form.Group controlId="forBasicSection">
                                 <Form.Label>Item Cuisine</Form.Label>

@@ -111,8 +111,10 @@ router.post('/img/upload', upload.single('selectedFile'), function (req, res) {
   const addProfilePic = async () => {
     if (table === "restaurantTable") {
       queryResult = await LoginSignUpDBObj.addRestaurantProfilePic(table, id, filename);
-    } else {
+    } else if (table === "buyerTable") {
       queryResult = await LoginSignUpDBObj.addBuyerProfilePic(table, id, filename);
+    } else {
+      queryResult = await LoginSignUpDBObj.addMenuItemImage(table, id, filename);
     }
     if (queryResult) {
       console.log("pic added");
@@ -144,6 +146,8 @@ router.get('/profile/img', function (req, res) {
       queryResult = await LoginSignUpDBObj.getRestaurantProfilepic(table, id);
     } else if (table === "buyerTable") {
       queryResult = await LoginSignUpDBObj.getBuyerProfilepic(table, id);
+    } else {
+      queryResult = await LoginSignUpDBObj.getMenuItemImage(table, id);
     }
     console.log("queryResult ");
     console.log(queryResult.image)
@@ -156,8 +160,10 @@ router.get('/profile/img', function (req, res) {
     if (queryResult) {
       if (table === "restaurantTable") {
         filename = queryResult.restaurantImage;
-      } else {
+      } else if (table === 'buyerTable') {
         filename = queryResult.buyerImage;
+      } else {
+        filename = queryResult.menuItemImage;
       }
       console.log("filename")
       console.log(filename);
@@ -166,10 +172,7 @@ router.get('/profile/img', function (req, res) {
       } else {
         let filePath = path.join(__dirname, "../uploads/profilePictures", filename);
         console.log("file path.." + filePath);
-        //let filePath = "/Users/Keerthy/Desktop/Fall/273/HW/Lab1/Lab-013858819/Lab1-013858819/GrubHub/grubhub-backend/uploads/profilePictures/" + filename;
         var base64str = base64_encode(filePath);
-        // var base64str = filePath;
-        // console.log(base64str);
         res.status(200).json({ base64str: base64str });
       }
     }

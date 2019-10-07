@@ -191,6 +191,27 @@ module.exports = class LoginSignUpDB {
     }
   }
 
+  async addMenuItemImage(table, id, filename) {
+    let con = await dbConnection();
+    try {
+      await con.query("START TRANSACTION");
+      await con.query(`UPDATE ?? SET menuItemImage = ? WHERE menuItemId = ?`, [
+        table,
+        filename,
+        id
+      ]);
+      await con.query("COMMIT");
+      return true;
+    } catch (ex) {
+      await con.query("ROLLBACK");
+      console.log(ex);
+      throw ex;
+    } finally {
+      await con.release();
+      await con.destroy();
+    }
+  }
+
   
   async addRestaurantProfilePic(table, id, filename) {
     let con = await dbConnection();

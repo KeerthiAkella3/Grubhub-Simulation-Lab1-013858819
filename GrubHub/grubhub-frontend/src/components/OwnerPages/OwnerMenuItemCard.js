@@ -27,6 +27,10 @@ export class OwnerMenuItemCard extends Component {
     render() {
         let itemName = this.props.itemName;
         let itemPrice = this.props.itemPrice;
+        let itemImage = null;
+        if (this.props.itemImage) {
+            itemImage = "data:image/png;base64," + this.props.itemImage;
+        }
         console.log("Menu Card item name " + itemName + " and section: " + this.props.itemSection);
         return (
             <div style={{ width: "inherit", 
@@ -42,6 +46,8 @@ export class OwnerMenuItemCard extends Component {
                         <Card.Text>
                             {itemPrice}
                         </Card.Text>
+                        <img src={itemImage} alt="Profile pic" height="40px" width="60px" ></img>
+                        <br/>
                         <Button variant="danger" onClick={ (e) => {
                             this.deleteMenuItemHandler(e, this.props.itemId)
                             }}>Delete</Button>

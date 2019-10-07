@@ -40,6 +40,12 @@ export class MenuPage extends Component {
     }
 
     saveMenuItemAddModal = (addItemState) => {
+        let restaurantId = cookie.load('cookie2');
+        let breakfastList = [];
+        let lunchList = [];
+        let appetizerList = [];
+        let menu = undefined;
+        let sections = undefined;
         console.log(addItemState);
         const data = {
             restaurantId: cookie.load('cookie2'),
@@ -50,20 +56,83 @@ export class MenuPage extends Component {
             menuItemSection: addItemState.itemSection,
         }
         axios.post('http://localhost:3001/restaurantMenu', data)
-        .then(response => {
-            if (response.status === 200) {
-                console.log('successfully added menu item to restaurants menu' + response.data.menuItemUniqueId);
-                console.log(response.data.responseMessage);
-            } else {
-                console.log("Status Code: ", response.status);
-                console.log(response.data.responseMessage);
-            }
-        }).catch(error => {
-            console.log(error);
-        });
-        this.setState({
-            showMenuItemAddModal: false,
-        })
+            .then(response => {
+                if (response.status === 200) {
+                    console.log('successfully added menu item to restaurants menu' + response.data.menuItemUniqueId);
+                    console.log(response.data.responseMessage);
+                    let itemId = response.data.menuItemUniqueId;
+
+                    // Upload Image Now
+                    let formData = new FormData();
+                    formData.append('id', itemId);
+                    formData.append('table', "restaurantMenuTable");
+                    formData.append('selectedFile', addItemState.itemImage);
+                    axios({
+                        method: 'post',
+                        url: 'http://localhost:3001/img/upload ',
+                        data: formData,
+                        config: { headers: { 'Content-Type': 'multipart/form-data' } }
+                    })
+                        .then((response) => {
+                            if (response.status >= 500) {
+                                throw new Error("Bad response from server");
+                            }
+                            console.log(response);
+                            return response.data;
+                        })
+                        .then((responseData) => {
+                            // alert(responseData.responseMessage);
+                            console.log('Menu Item Image Added');
+                        }).catch(function (err) {
+                            console.log(err)
+                        });
+
+                    // Update all menu items
+                    axios.get('http://localhost:3001/menu', {
+                        params: {
+                            restaurantId: restaurantId
+                        }
+                    })
+                        .then(response => {
+                            if (response.status === 200) {
+                                console.log('response from DB: ');
+                                console.log(response.data);
+                                menu = response.data.menu;
+                                sections = response.data.sections;
+                                for (let index = 0; index < menu.length; index++) {
+                                    if (menu[index].itemSection === "Breakfast") {
+                                        breakfastList.push(menu[index]);
+                                    } else if (menu[index].itemSection === "Lunch") {
+                                        lunchList.push(menu[index]);
+                                    } else {
+                                        appetizerList.push(menu[index]);
+                                    }
+                                }
+                            } else {
+                                console.log("Status Code: ", response.status);
+                                console.log(response.data.responseMessage);
+                            }
+
+                            this.setState({
+                                showMenuItemAddModal: false,
+                                lunch: lunchList,
+                                breakfast: breakfastList,
+                                appetizer: appetizerList,
+                                isBreakfastPresent: sections.isBreakfast,
+                                isAppetizersPresent: sections.isAppetizer,
+                                isLunchPresent: sections.isLunch,
+                            })
+                        }).catch(error => {
+                            console.log(error);
+                        });
+                } else {
+                    console.log("Status Code: ", response.status);
+                    console.log(response.data.responseMessage);
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+
     }
 
     onAddItemsHandler = () => {
@@ -109,7 +178,6 @@ export class MenuPage extends Component {
                 }
             })
                 .then(response => {
-
                     if (response.status === 200) {
                         console.log('response from DB: ');
                         console.log(response.data);
@@ -216,7 +284,7 @@ export class MenuPage extends Component {
             if (count === 1) {
                 sectionName = "Appetizers";
                 currentSection = this.state.appetizers;
-                isCurrentSectionPresent = this.state.isAppetizersPresent;
+                isCurrentSectionPresent = this.state.isAppetizersPresent;   
             } else if (count === 2) {
                 sectionName = "Lunch";
                 currentSection = this.state.lunch;
@@ -232,6 +300,7 @@ export class MenuPage extends Component {
                             itemPrice={currentSection[index].itemPrice}
                             itemId={currentSection[index].itemId}
                             itemSection={currentSection[index].itemSection}
+                            itemImage={currentSection[index].itemImage}
                             handleDeleteItem={this.handleDeleteItem}
                         />
                     );
@@ -395,9 +464,9 @@ export class MenuPage extends Component {
         let MenuItemAddModalDOM = [];
         if (this.state.showMenuItemAddModal) {
             MenuItemAddModalDOM = <MenuItemAddModal
-            onClose={this.closeMenuItemAddModal}
-            onSave = {this.saveMenuItemAddModal}
-        />;
+                onClose={this.closeMenuItemAddModal}
+                onSave={this.saveMenuItemAddModal}
+            />;
         }
 
         return (

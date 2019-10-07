@@ -267,6 +267,7 @@ export class BuyerDetailsPage extends Component {
             paddingBottom: "5px",
             color: "inherit",
             backgroundColor: "inherit",
+            borderStyle: "none",
         }
         if (this.state.showPlaceOrderModal === true) {
             placeOrderModalDOM = <PlaceOrder
@@ -293,10 +294,11 @@ export class BuyerDetailsPage extends Component {
                 );
             }
             if (allBreakfastItems.length > 0) {
-                MenuDOM.push(<tr>
-                    <th>Breakfast</th>
-                    {sectionData}
-                </tr>)
+                MenuDOM.push(
+                    <Row>
+                        <h4>Breakfast</h4>
+                        {sectionData}
+                    </Row>);
             }
 
             sectionData = [];
@@ -311,10 +313,15 @@ export class BuyerDetailsPage extends Component {
                 );
             }
             if (allLunchItems.length > 0) {
-                MenuDOM.push(<tr>
-                    <th>Lunch</th>
+                MenuDOM.push(<Row style={{
+                    marginBottom: '15px',
+                    paddingBottom: '5px',
+                    borderStyle:'1px solid',
+                    borderRadius: '5px',
+                }}>
+                    <h4>Lunch</h4>
                     {sectionData}
-                </tr>)
+                </Row>);
             }
 
             sectionData = [];
@@ -329,10 +336,10 @@ export class BuyerDetailsPage extends Component {
                 );
             }
             if (allAppterizerItems.length > 0) {
-                MenuDOM.push(<tr>
-                    <th>Appetiizer</th>
+                MenuDOM.push(<Row>
+                    <h4>Appetiizer</h4>
                     {sectionData}
-                </tr>)
+                </Row>)
             }
 
             if (this.state.showQuantitySelector === true) {
@@ -367,12 +374,29 @@ export class BuyerDetailsPage extends Component {
                 <div>
                     <BuyerNavBar />
                     <RestaurantBanner restaurantName={restaurantName} />
-                    <Container>
-                        <Row>
-                            <Col sm={7}>
-                                <Table responsive>
+                    <Container style={{
+                        maxWidth: "100%",
+                        width: "100%",
+                        heigth: "100%",
+                        marginLeft: "0",
+                        marginRight: "0",
+                    }}>
+                        <Row style={{
+                            width: "100%",
+                            height: "100%",
+                            marginLeft: "0",
+                            marginRight: "0",
+                        }}>
+                            <Col sm={7} style={{
+                                paddingLeft: "0",
+                                paddingRight: "0",
+                            }}>
+                                <Container style={{
+                                    maxWidth: "100%",
+                                    width: "100%",
+                                }}>
                                     {MenuDOM}
-                                </Table>
+                                </Container>
                             </Col>
                             <Col sm={5}>
                                 {ShoppingCartDOM}
