@@ -198,6 +198,36 @@ router.post('/postOrder', function (req, res) {
   }
 });
 
+
+router.get('/getBuyerOrder', function (req, res) {
+  getAllBuyerOrders = async () => {
+    let buyerEmailId = req.query.buyerEmailId;
+    var getBuyerOrderResult = await LoginSignUpDBObj.getBuyerOrderTable();
+    if (getBuyerOrderResult === undefined) {
+      res.status(500).json({
+        responseMessage : "Unable to get information from buyer order table",
+      })
+    } else {
+      for (let index = 0; index < getBuyerOrderResult.length; index++) {
+        let anOrder = getBuyerOrderResult[index];
+        if (anOrder.buyerEmailId === buyerEmailId) {
+          let uniqueOrderId = anOrder.uniqueOrderId;
+        }       
+      }
+      res.status(200).json({
+        responseMessage: "Found entries in buyer order table",
+      })
+    }
+  }
+
+  try {
+    getBuyerOrderResult();
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
 /*
   * Call this endpoint from Restaurant Owner, when restaurant Owner is managing status of order
   * From new --> preparing --> ready --> delivered.
@@ -223,6 +253,14 @@ router.post('/updateOrder', function (req, res) {
       res.status(500).json({
         responseMessage: 'Failed to update Order!'
       });
+    }
+
+    if (orderStatus === "Delivered") {
+      updateBuyerOrderTable = await LoginSignUpDBObj.updateBuyerOrderTable("buyerOrderTable", req.body.uniqueOrderId, "Past"); 
+      console.log(rejectBuyerOrderTableEntry);
+      if (rejectBuyerOrderTableEntry && rejectBuyerOrderTableEntry.affectedRows != 1) {
+        console.log("Entry not found in BuyerOrderTable");
+      }
     }
   }
 

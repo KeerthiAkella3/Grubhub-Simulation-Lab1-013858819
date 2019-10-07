@@ -387,6 +387,27 @@ module.exports = class LoginSignUpDB {
     }
   }
 
+  async getBuyerOrderTable(table, uniqueOrderId, orderStatus) {
+    let con = await dbConnection();
+    try {
+      await con.query("START TRANSACTION");
+      let result = await con.query('SELECT * FROM buyerOrderTable');
+      await con.query("COMMIT");
+      result = JSON.parse(JSON.stringify(result));
+      console.log(result);
+      return result;
+    } catch (ex) {
+      console.log("Caught DB Exception");
+      console.log(ex);
+      throw ex;
+    } finally {
+      await con.release();
+      await con.destroy();
+    }
+  }
+
+
+
   async updateOrderByRestaurant(table, updateData) {
     let con = await dbConnection();
     let uniqueOrderId = updateData.uniqueOrderId;

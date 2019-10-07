@@ -17,7 +17,7 @@ import BuyerHomePage from './components/BuyerPages/BuyerHomePage';
 import BuyerSearchPage from './components/BuyerPages/BuyerSearchPage';
 import BuyerDetailsPage from './components/BuyerPages/BuyerDetailsPage';
 import LandingPage from './components/LandingPage/LandingPage'
-import buyerOrdersPage from './components/BuyerPages/BuyerOrdersPage';
+// import buyerOrdersPage from './components/BuyerPages/BuyerOrdersPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -37,7 +37,7 @@ function App() {
         <Route path='/ownerHomePage' component={CompOwnerPage}/>
         <Route path="/buyerSearchPage" component={BuyerSearchPage}/>
         <Route path='/restaurantDetailsPage' component={BuyerDetailsPage}/>
-        <Route path='/buyerOrdersPage' component={BuyerOrdersPage}/>
+        {/* <Route path='/buyerOrdersPage' component={BuyerOrdersPage}/> */}
       </div>
     </Router>
   );
