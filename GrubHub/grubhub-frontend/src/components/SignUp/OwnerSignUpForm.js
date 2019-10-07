@@ -77,7 +77,7 @@ class OwnerProfileForm extends Component {
             emailId: this.state.emailId,
             password: this.state.password,
             restaurentName: this.state.restaurentName,
-            phoneNumber: this.state.phoneNumber,
+            phoneNumber: this.state.phoneNumber.substring(1,4),
             cuisine: this.state.cuisine,
             Address: this.state.Address
         }

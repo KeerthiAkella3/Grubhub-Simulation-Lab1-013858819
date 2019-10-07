@@ -65,7 +65,7 @@ class BuyerProfileForm extends Component {
             buyerName: this.state.buyerName,
             emailId: this.state.emailId,
             password: this.state.password,
-            phoneNumber: this.state.phoneNumber,
+            phoneNumber: this.state.phoneNumber.substring(1,4),
             Address: this.state.Address,
         }
 
