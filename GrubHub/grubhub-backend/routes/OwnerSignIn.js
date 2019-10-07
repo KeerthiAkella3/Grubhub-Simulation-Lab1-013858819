@@ -30,7 +30,7 @@ router.post('/ownerSignIn',function (req, res) {
     const checkuser = async () => {
      // console.log("in owner sign in " + req.body.emailId)
     queryResult = await LoginSignUpDBObj.ownerLogin("restaurantTable", formatEmail , encryptedPassword);
-    console.log("query result "+queryResult[0].restaurantName);
+    console.log("query result " + queryResult[0].restaurantName);
     
   if (!queryResult[0]){
     console.log("Unable to find user");
@@ -38,9 +38,9 @@ router.post('/ownerSignIn',function (req, res) {
   } else {
   if (queryResult[0].restaurantName != null) {
     console.log("User exists! Valid credentials");
-    res.cookie('cookie1',formatEmail,{maxAge: 900000, httpOnly: false, path : '/'});
-    res.cookie('cookie2',queryResult[0].restaurantId,{maxAge: 900000, httpOnly: false, path : '/'});
-    res.cookie('cookie3',queryResult[0].restaurantName,{maxAge: 900000, httpOnly: false, path : '/'});
+    res.cookie('cookie1',formatEmail,{maxAge: 9000000, httpOnly: false, path : '/'});
+    res.cookie('cookie2',queryResult[0].restaurantId,{maxAge: 9000000, httpOnly: false, path : '/'});
+    res.cookie('cookie3',queryResult[0].restaurantName,{maxAge: 9000000, httpOnly: false, path : '/'});
     console.log("Added cookies");
     req.session.formatEmail = queryResult[0].restaurantEmailId;
     res.status(200).json({validUser: true});

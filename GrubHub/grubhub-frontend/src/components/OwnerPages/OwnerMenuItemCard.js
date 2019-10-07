@@ -9,7 +9,6 @@ export class OwnerMenuItemCard extends Component {
 
         this.state = {
             handleDeleteItem : undefined,
-            stopRendering : false,
         }
         this.deleteMenuItemHandler = this.deleteMenuItemHandler.bind(this);
     }
@@ -17,24 +16,17 @@ export class OwnerMenuItemCard extends Component {
     componentDidMount = () => {
         this.setState({
             handleDeleteItem: this.props.handleDeleteItem,
-            itemSection: this.props.itemSection,
         })
     }
 
     deleteMenuItemHandler = (e, itemId) => {
         // Tell parent component that an item is deleted and update state with now available items in menu
         this.state.handleDeleteItem(e, itemId);
-        this.setState({
-            stopRendering : true,
-        })
     }
 
     render() {
         let itemName = this.props.itemName;
         let itemPrice = this.props.itemPrice;
-        if (this.state.stopRendering === true) {
-            return null;
-        }
         console.log("Menu Card item name " + itemName + " and section: " + this.props.itemSection);
         return (
             <div style={{ width: "inherit", 

@@ -7,11 +7,9 @@ import FormControl from 'react-bootstrap/FormControl'
 import Container from 'react-bootstrap/Container'
 import { Icon } from 'rsuite'
 import { IconButton } from 'rsuite'
-import { ButtonGroup } from 'rsuite'
 import axios from 'axios';
 import { Redirect } from 'react-router-dom'
-import Navbar from 'react-bootstrap/Navbar'
-import GrubHubForRestaurants from '../../images/grubhub-full-logo.svg'
+import BuyerNavBar from './BuyerNavBar'
 
 
 /**
@@ -135,53 +133,7 @@ export class BuyerHomePage extends Component {
             <div style={buyerHomePageDiv}>
                 {/* Navbar with GRUBHUB Brand Logo */}
                 {/* <Navbar bg="light" expand="lg" style={{ */}
-                <Navbar expand="lg" style={{
-                    paddingLeft: "25px",
-                    paddingTop: "20px",
-                    paddingRight: "0%",
-                    marginLeft: "0%",
-                    marginRight: "0%",
-                    marginBottom: "0%",
-                    height: "61px",
-                    boxShadow: "0 0 0 1px rgba(67,41,163,.1), 0 1px 8px 0 rgba(67,41,163,.1)",
-                    backgroundColor: "white",
-                    zIndex: "2",
-                }}>
-                    <Container style={{
-                        width: '100%',
-                        heigth: '100%',
-                        marginLeft: '0%',
-                        paddingLeft: '0%',
-                        maxWidth: '100%',
-                    }}>
-                        <Row style={{
-                            height: '50px',
-                            width: '100%',
-                        }}>
-                            <Col sm={11}>
-                                <a className="mainNavBrand-logo" title="GRUBHUB" href="/" style={{
-                                    width: "100%",
-                                    height: "inherit"
-                                }}>
-                                    <img useMap="#" src={GrubHubForRestaurants} className="authentication-view__header__image" alt="GH Restaurant" style={{
-                                        width: "100px",
-                                        heigth: "50px",
-                                    }} />
-                                </a>
-                            </Col>
-                            <Col sm={0} style={{
-                                alighItems: 'flex-end',
-                            }}>
-                                <ButtonGroup horizontal="true">
-                                    <IconButton circle={true} onClick={this.handleSubmit} className="btn btn-outline-secondary" icon={<Icon icon="first-order" />} />
-                                    <IconButton circle={true} onClick={this.handleSubmit} className="btn btn-outline-secondary" icon={<Icon icon="user" />} />
-                                    <IconButton circle={true} onClick={this.handleLogout} className="btn btn-outline-secondary" icon={<Icon icon="sign-out" />} />
-                                </ButtonGroup>
-
-                            </Col>
-                        </Row>
-                    </Container>
-                </Navbar>
+                <BuyerNavBar/>
                 <Container style={buyerHomePageContainer}>
                     <Row style={{
                         // height: '50px'

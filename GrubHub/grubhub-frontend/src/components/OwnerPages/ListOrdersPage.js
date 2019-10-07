@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ListGroup from 'react-bootstrap/ListGroup'
 import OrderBrief from './OrderBrief'
 import axios from 'axios';
+import cookie from 'react-cookies'
 
 
 export class ListOrdersPage extends Component {
@@ -26,7 +27,7 @@ export class ListOrdersPage extends Component {
 
     getDataFromDB = () => {
         const statusOfAllOrders = this.props.status;
-        const restaurantId = this.props.restaurantId;
+        const restaurantId = cookie.load('cookie2');
         console.log("Asking backend for details on restaurant with ID = " + restaurantId + " and with status = " + statusOfAllOrders);
         axios.get('http://localhost:3001/restaurantOrders', {
             params: {

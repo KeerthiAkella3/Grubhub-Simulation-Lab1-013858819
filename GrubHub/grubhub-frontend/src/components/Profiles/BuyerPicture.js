@@ -57,8 +57,6 @@ class BuyerPicture extends Component {
                     console.log(err)
                 });
         }
-
-
     }
 
 
@@ -117,7 +115,7 @@ class BuyerPicture extends Component {
                     }).catch(function (err) {
                         console.log(err)
                     });
-            
+
                 //window.location.reload();
             }).catch(function (err) {
                 console.log(err)
@@ -169,51 +167,41 @@ class BuyerPicture extends Component {
         }
         let divButton = null;
         if (this.state.showButton) {
-            divButton = <button type="submit" className="btn btn-primary update-button" style={{marginLeft:"6.5em"}} >Update Profile</button>
+            divButton = <button type="submit" className="btn btn-primary update-button" style={{ marginLeft: "6.5em" }} >Update Profile</button>
         }
         let defaultIMGDiv = (<div className='buttons fadein'>
-        <div className='button'>
-            <label htmlFor='single'>
-                <div style={{ fontSize: "130px", marginLeft: "0.25em" }}>
-                    <i className="fa fa-user fa-10x"></i>
+            <div className='button'>
+                <label htmlFor='single'>
+                    <div style={{ fontSize: "130px", marginLeft: "0.25em" }}>
+                        <i className="fa fa-user fa-10x"></i>
+                    </div>
+                </label>
+            </div>
+
+        </div>);
+        let imgDiv
+        if (this.state.img != null) {
+            console.log("has profile pic");
+            imgDiv = (<div className='buttons fadein'>
+                <div className='button'>
+                    <label htmlFor='single'>
+                        <img src={this.state.img} alt="Profile pic" height="400" width="600" ></img>
+                    </label>
+                    {/* <input type='file' id='single' name="selectedFile" onChange={this.onPicUpload} style={{ height: "0px", width: "0px" }} accept="image/x-png,image/gif,image/jpeg" /> */}
                 </div>
-            </label>
-        </div>
 
-    </div>);
-    let imgDiv
-    if (this.state.img != null) {
-        
-        console.log("has profile pic");
-        imgDiv =  (<div className='buttons fadein'>
-        <div className='button'>
-            <label htmlFor='single'>
-                
-                    <img src={this.state.img} alt="Profile pic"  height= "400" width= "600" ></img>
-
-               
-            </label>
-            {/* <input type='file' id='single' name="selectedFile" onChange={this.onPicUpload} style={{ height: "0px", width: "0px" }} accept="image/x-png,image/gif,image/jpeg" /> */}
-        </div>
-
-    </div>);
+            </div>);
         }
-        else{
+        else {
             imgDiv = defaultIMGDiv;
         }
         return (
 
             <div>
-
                 Profile Picture page
-                    
-
                 {imgDiv}
-               
                 <input type='file' id='single' name="selectedFile" onChange={this.onPicUpload} style={{ height: "0px", width: "0px" }} accept="image/x-png,image/gif,image/jpeg" />
-
                 {divButton}
-
                 <br>
                 </br>
                 <br></br>
@@ -222,8 +210,5 @@ class BuyerPicture extends Component {
 
     }
 }
-
-
-
 
 export default BuyerPicture;

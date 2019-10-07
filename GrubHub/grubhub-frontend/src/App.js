@@ -9,15 +9,14 @@ import BuyerSignIn from './components/SignIn/BuyerSignIn';
 import OwnerSignIn from './components/SignIn/OwnerSignIn';
 import OwnerSignUp from './components/SignUp/OwnerSignUpForm';
 import BuyerSignUp from './components/SignUp/BuyerSignUpForm';
-import BuyerUpdate from './components/Profiles/BuyerProfilePage'
-import OwnerUpdate from './components/Profiles/OwnerProfilePage'
+import BuyerProfilePage from './components/Profiles/BuyerProfilePage'
 import BuyerPicture from './components/Profiles/BuyerPicture'
 import OwnerPicture from './components/Profiles/OwnerPicture'
 import CompOwnerPage from './components/OwnerPages/CompOwnerPage';
 import BuyerHomePage from './components/BuyerPages/BuyerHomePage';
 import BuyerSearchPage from './components/BuyerPages/BuyerSearchPage';
 import BuyerDetailsPage from './components/BuyerPages/BuyerDetailsPage';
-
+import LandingPage from './components/LandingPage/LandingPage'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -25,13 +24,12 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Route exact path="/" component={GettingStarted} />
+        <Route exact path="/" component={LandingPage} />
         <Route path="/BuyerSignUp" component={BuyerSignUp} />
         <Route path="/OwnerSignUp" component={OwnerSignUp} />
         <Route path="/BuyerSignIn" component={BuyerSignIn} />
         <Route path="/OwnerSignIn" component={OwnerSignIn} />
-        <Route path="/BuyerUpdate" component={BuyerUpdate} />
-        <Route path="/OwnerUpdate" component={OwnerUpdate} />
+        <Route path="/BuyerProfilePage" component={BuyerProfilePage} />
         <Route path="/BuyerPicture" component={BuyerPicture} />
         <Route path="/OwnerPicture" component={OwnerPicture} />
         <Route path='/buyerHomePage' component={BuyerHomePage}/>

@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import BuyerFilterSearchPage from './BuyerFilterSearchPage'
 import { Redirect } from 'react-router-dom'
+import BuyerNavBar from './BuyerNavBar'
 
 /**
  * List all search results:
@@ -121,28 +122,7 @@ export class BuyerSearchPage extends Component {
                 height: "100%"
             }}>
                 {/* Navbar with GRUBHUB Brand Logo */}
-                <Navbar expand="lg" style={{
-                    paddingLeft: "25px",
-                    paddingTop: "20px",
-                    paddingRight: "0%",
-                    marginLeft: "0%",
-                    marginRight: "0%",
-                    marginBottom: "0%",
-                    height: "61px",
-                    boxShadow: "0 0 0 1px rgba(67,41,163,.1), 0 1px 8px 0 rgba(67,41,163,.1)",
-                    backgroundColor: "white",
-                    zIndex: "2",
-                }}>
-                    <a className="mainNavBrand-logo" title="GRUBHUB" href="/" style={{
-                        width: "inherit",
-                        height: "inherit"
-                    }}>
-                        <img useMap="#" src={GrubHubForRestaurants} className="authentication-view__header__image" alt="GH Restaurant" style={{
-                            width: "100px",
-                            heigth: "50px",
-                        }} />
-                    </a>
-                </Navbar>
+                <BuyerNavBar/>
                 <Container style={{
                     marginLeft: "0%",
                     marginRight: "0%",

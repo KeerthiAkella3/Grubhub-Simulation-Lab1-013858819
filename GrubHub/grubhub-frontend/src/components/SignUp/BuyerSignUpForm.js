@@ -27,6 +27,7 @@ class BuyerProfileForm extends Component {
         this.passwordChangeHandler = this.passwordChangeHandler.bind(this)
         this.phoneNumberChangeHandler = this.phoneNumberChangeHandler.bind(this)
         this.submitBuyerSignUp = this.submitBuyerSignUp.bind(this)
+        this.addressChangeHandler = this.addressChangeHandler.bind(this)
     }
     buyerNameChangeHandler = (e) => {
         this.setState({
@@ -50,6 +51,12 @@ class BuyerProfileForm extends Component {
         })
     }
 
+    addressChangeHandler = (e) => {
+        this.setState({
+            Address: e.target.value
+        })
+    }
+
     submitBuyerSignUp = (e) => {
         //console.log("in submit ")
         e.preventDefault();
@@ -59,6 +66,7 @@ class BuyerProfileForm extends Component {
             emailId: this.state.emailId,
             password: this.state.password,
             phoneNumber: this.state.phoneNumber,
+            Address: this.state.Address,
         }
 
         console.log("data is..")

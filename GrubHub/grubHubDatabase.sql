@@ -84,23 +84,23 @@ show tables;
 
 CREATE TABLE restaurantTable(
 	restaurantId INT NOT NULL AUTO_INCREMENT,
-	restaurantName VARCHAR(100) NOT NULL,
-	restaurantEmailId VARCHAR(40) NOT NULL,
-	restaurantPassword VARCHAR(100) NOT NULL,
-    restaurantAddress VARCHAR(50) NOT NULL,
-	restaurantCuisine VARCHAR(40) NOT NULL,
-    restaurantPhone INT(15) NOT NULL,
+	restaurantName VARCHAR(100),
+	restaurantEmailId VARCHAR(40),
+	restaurantPassword VARCHAR(100),
+    restaurantAddress VARCHAR(50),
+	restaurantCuisine VARCHAR(40),
+    restaurantPhone VARCHAR(15),
 	restaurantImage VARCHAR(50),
 	PRIMARY KEY (restaurantId)
 ); 
     
 CREATE TABLE buyerTable(
 	buyerId INT NOT NULL AUTO_INCREMENT,
-	buyerName VARCHAR(100) NOT NULL,
-	buyerEmailId VARCHAR(40) NOT NULL,
-	buyerPassword VARCHAR(100) NOT NULL,
+	buyerName VARCHAR(100),
+	buyerEmailId VARCHAR(40),
+	buyerPassword VARCHAR(100),
     buyerAddress VARCHAR(200),
-    buyerPhone INT(15) NOT NULL,
+    buyerPhone VARCHAR(15),
 	buyerImage VARCHAR(50),
 	PRIMARY KEY (buyerId)
 );
@@ -162,12 +162,11 @@ CREATE TABLE restaurantMenuTable(
     menuItemId INT NOT NULL AUTO_INCREMENT,
     menuItemName VARCHAR(100) NOT NULL,
     menuItemDesc VARCHAR(100) NOT NULL,
-    menuItemImage BLOB,
+    menuItemImage VARCHAR(100),
     menuItemPrice float(5) NOT NULL,
     menuItemSection ENUM('Lunch', 'Appetizers', 'Breakfast'),
-    menuItemCuisine VARCHAR(100) NOT NULL,
     restaurantId INT NOT NULL, /* This points to which restaurant i.e., Restaurant this menu Item belongs to */
-    PRIMARY KEY(menuItemId),
+    PRIMARY KEY(menuItemId)
 );
 
 /*
@@ -186,103 +185,103 @@ CREATE TABLE restaurantSectionTable(
 -- END OF TABLE CREATION
 
 -- Section Table 
--- INSERT INTO restaurantSectionTable SET 
--- 				lunchSection = true,
---                 breakfastSection = true,
---                 appetizerSection = false,
---                 restaurantId = 1;
+INSERT INTO restaurantSectionTable SET 
+				lunchSection = true,
+                breakfastSection = true,
+                appetizerSection = false,
+                restaurantId = 1;
 
 
--- -- Restaurant Table
--- /**
--- * Create Two Retaurants
--- */
--- INSERT INTO restaurantTable SET 
--- 	restaurantName = "Dusita Thai",
--- 	restaurantEmailId = "dusita_thai@gmail.com",
--- 	restaurantPassword = "dusita",
---     zipcode = 94086,
--- 	cuisine = "Thai",
---     phoneNumber = 6307797555
---     ;
+-- Restaurant Table
+/**
+* Create Two Retaurants
+*/
+INSERT INTO restaurantTable SET 
+	restaurantName = "Dusita Thai",
+	restaurantEmailId = "dusita_thai@gmail.com",
+	restaurantPassword = "dusita",
+    zipcode = 94086,
+	cuisine = "Thai",
+    phoneNumber = 6307797555
+    ;
 
--- INSERT INTO restaurantTable SET 
--- 	restaurantName = "Universal Foods",
--- 	restaurantEmailId = "universal_foods@gmail.com",
--- 	restaurantPassword = "uvfoods",
---     zipcode = 94087,
--- 	cuisine = "All",
---     phoneNumber = 9490754166
---     ;
+INSERT INTO restaurantTable SET 
+	restaurantName = "Universal Foods",
+	restaurantEmailId = "universal_foods@gmail.com",
+	restaurantPassword = "uvfoods",
+    zipcode = 94087,
+	cuisine = "All",
+    phoneNumber = 9490754166
+    ;
 
 
 
--- -- restaurant Menu Table
--- /**
---     *Insert into restaurantMenuTable
--- */
--- INSERT INTO restaurantMenuTable SET 
---             menuItemName = 'Marinara Pizza',
---             menuItemDesc = 'Pizza with Parmesan, Cheddar Cheese and Marinara Sauce on Top',
---             menuItemPrice = 13.99,
---             menuItemSection = 'Lunch',
---             restaurantId = 1,
---             menuItemCuisine = "Italian"
---             ;
+-- restaurant Menu Table
+/**
+    *Insert into restaurantMenuTable
+*/
+INSERT INTO restaurantMenuTable SET 
+            menuItemName = 'Marinara Pizza',
+            menuItemDesc = 'Pizza with Parmesan, Cheddar Cheese and Marinara Sauce on Top',
+            menuItemPrice = 13.99,
+            menuItemSection = 'Lunch',
+            restaurantId = 1,
+            menuItemCuisine = "Italian"
+            ;
 
--- INSERT INTO restaurantMenuTable SET 
---             menuItemName = 'Garden Veggie Pizza',
---             menuItemDesc = 'Pizza with Parmesan, Cheddar Cheese, Broccoli, Olives and Pesto Sauce on Top',
---             menuItemPrice = 16.99,
---             menuItemSection = 'Lunch',
---             restaurantId = 1,
---             menuItemCuisine = "Italian"
---             ;
+INSERT INTO restaurantMenuTable SET 
+            menuItemName = 'Garden Veggie Pizza',
+            menuItemDesc = 'Pizza with Parmesan, Cheddar Cheese, Broccoli, Olives and Pesto Sauce on Top',
+            menuItemPrice = 16.99,
+            menuItemSection = 'Lunch',
+            restaurantId = 1,
+            menuItemCuisine = "Italian"
+            ;
 
--- INSERT INTO restaurantMenuTable SET 
---             menuItemName = 'Phad Thai',
---             menuItemDesc = 'phad thai is a stir-fried rice noodle dish commonly served as a street food',
---             menuItemPrice = 11.99,
---             menuItemSection = 'Lunch',
---             restaurantId = 1,
---             menuItemCuisine = "Thai"
---             ;
+INSERT INTO restaurantMenuTable SET 
+            menuItemName = 'Phad Thai',
+            menuItemDesc = 'phad thai is a stir-fried rice noodle dish commonly served as a street food',
+            menuItemPrice = 11.99,
+            menuItemSection = 'Lunch',
+            restaurantId = 1,
+            menuItemCuisine = "Thai"
+            ;
 
--- INSERT INTO restaurantMenuTable SET 
---             menuItemName = 'Phad Thai',
---             menuItemDesc = 'phad thai is a stir-fried rice noodle dish commonly served as a street food',
---             menuItemPrice = 14.99,
---             menuItemSection = 'Lunch',
---             restaurantId = 2,
---             menuItemCuisine = "Thai"
---             ;
+INSERT INTO restaurantMenuTable SET 
+            menuItemName = 'Phad Thai',
+            menuItemDesc = 'phad thai is a stir-fried rice noodle dish commonly served as a street food',
+            menuItemPrice = 14.99,
+            menuItemSection = 'Lunch',
+            restaurantId = 2,
+            menuItemCuisine = "Thai"
+            ;
 
--- INSERT INTO restaurantMenuTable SET 
---             menuItemName = 'Vegetarian Biryani',
---             menuItemDesc = 'Soft Basmati Rice cooked in Pot with vegetables and spices. Specialty from India!',
---             menuItemPrice = 12.99,
---             menuItemSection = 'Lunch',
---             restaurantId = 1,
---             menuItemCuisine = "Indian"
---             ;
+INSERT INTO restaurantMenuTable SET 
+            menuItemName = 'Vegetarian Biryani',
+            menuItemDesc = 'Soft Basmati Rice cooked in Pot with vegetables and spices. Specialty from India!',
+            menuItemPrice = 12.99,
+            menuItemSection = 'Lunch',
+            restaurantId = 1,
+            menuItemCuisine = "Indian"
+            ;
 
--- INSERT INTO restaurantMenuTable SET 
---             menuItemName = 'Eggwich With Cheese Bagel',
---             menuItemDesc = 'Bagel with cheese of choice and half-boiled egg yolk',
---             menuItemPrice = 4.99,
---             menuItemSection = 'Breakfast',
---             restaurantId = 1,
---             menuItemCuisine = "American"
---             ;
+INSERT INTO restaurantMenuTable SET 
+            menuItemName = 'Eggwich With Cheese Bagel',
+            menuItemDesc = 'Bagel with cheese of choice and half-boiled egg yolk',
+            menuItemPrice = 4.99,
+            menuItemSection = 'Breakfast',
+            restaurantId = 1,
+            menuItemCuisine = "American"
+            ;
 
--- INSERT INTO restaurantMenuTable SET 
---             menuItemName = 'Pancake',
---             menuItemDesc = 'Needs no introduction. Fulfilling breakfast for years',
---             menuItemPrice = 9.99,
---             menuItemSection = 'Breakfast',
---             restaurantId = 1,
---             menuItemCuisine = "American"
---             ;                                                
+INSERT INTO restaurantMenuTable SET 
+            menuItemName = 'Pancake',
+            menuItemDesc = 'Needs no introduction. Fulfilling breakfast for years',
+            menuItemPrice = 9.99,
+            menuItemSection = 'Breakfast',
+            restaurantId = 1,
+            menuItemCuisine = "American"
+            ;                                                
 
 -- select * from restaurantTable;
 -- select * from buyerTable;

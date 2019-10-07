@@ -119,7 +119,7 @@ module.exports = class LoginSignUpDB {
   //   Address VARCHAR(200),
   //   phoneNumber int(15) NOT NULL,
   // PRIMARY KEY ( buyerId));
-  async updateBuyer(table, id, inputData) {
+  async updateBuyer(table, buyerId, inputData) {
     let con = await dbConnection();
     try {
       await con.query("START TRANSACTION");
@@ -128,9 +128,9 @@ module.exports = class LoginSignUpDB {
         table,
         inputData.buyerName,
         //inputData.img,
-        inputData.phonenumber,
-        inputData.Address,
-        (id)
+        inputData.buyerPhone,
+        inputData.buyerAddress,
+        buyerId      
       ]);
       await con.query("COMMIT");
       //console.log("in login db  "+inputData);
@@ -145,17 +145,17 @@ module.exports = class LoginSignUpDB {
     }
   }
 
-  async updateOwner(table, id, inputData) {
+  async updateOwner(table, restaurantId, inputData) {
     let con = await dbConnection();
     try {
       await con.query("START TRANSACTION");
       await con.query(`UPDATE ?? SET restaurantName = ?, restaurantPhone = ?, restaurantAddress = ?
-            WHERE id = ?`, [
+            WHERE restaurantId = ?`, [
         table,
-        inputData.ownerName,
-        inputData.phonenumber,
-        inputData.Address,
-        (id)
+        inputData.restaurantName,
+        inputData.restaurantPhone,
+        inputData.restaurantAddress,
+        restaurantId
       ]);
       await con.query("COMMIT");
       //console.log("in login db  "+inputData);
@@ -440,13 +440,15 @@ module.exports = class LoginSignUpDB {
           itemId: orderItemsInfo[index].itemId,
           itemName: orderItemsInfo[index].itemName,
           itemQuantity: orderItemsInfo[index].itemQuantity,
-          itemTotalPrice: orderItemsInfo[index].itemTotalPrice,
+          itemTotalPrice: parseFloat(orderItemsInfo[index].itemTotalPrice),
         }
         console.log('INSERT INTO ' + table + ' SET ' + postOrderItemInfoData);
+        console.log(postOrderItemInfoData);
         result = await con.query('INSERT INTO ?? SET ?', [table, postOrderItemInfoData]);
       }
       await con.query("COMMIT");
       result = JSON.parse(JSON.stringify(result));
+      return result;
     } catch (ex) {
       console.log(ex);
       throw ex;
@@ -527,6 +529,26 @@ module.exports = class LoginSignUpDB {
       await con.destroy();
     }
   }
+
+  async addMenuItem(table, data) {
+    let con = await dbConnection();
+    console.log(data);
+    try {
+      await con.query("START TRANSACTION");
+      console.log("Running INSERT INTO " + table + " SET " + data);
+      let result = await con.query('INSERT INTO ?? SET ?', [table, data]);
+      await con.query("COMMIT");
+      result = JSON.parse(JSON.stringify(result));
+      return result;
+    } catch (ex) {
+      console.log(ex);
+      throw ex;
+    } finally {
+      await con.release();
+      await con.destroy();
+    }
+  }
+  
 
   async deleteMenuItem(table, menuItemId) {
     let con = await dbConnection();

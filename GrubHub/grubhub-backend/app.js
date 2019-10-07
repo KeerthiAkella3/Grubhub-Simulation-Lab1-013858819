@@ -17,7 +17,12 @@ var buyerSignUp = require('./routes/BuyerSignUp')
 var buyerSignIn = require('./routes/BuyerSignIn')
 var ownerSignIn = require('./routes/OwnerSignIn')
 var dbConnection = require('./database/dbConnectionPool');
-var updateProfile = require('./routes/UpdateProfile')
+var buyerDetails = require('./routes/buyerDetails')
+var restaurantDetails = require('./routes/restaurantDetails');
+var menuItemManage = require('./routes/menuItemManage');
+var orderManage = require('./routes/orderManage');
+var sectionManage = require('./routes/sectionManage');
+var dbConnection = require('./database/dbConnectionPool');
 //var updatePicture = require('./routes/UpdateProfile')
 
 
@@ -51,7 +56,12 @@ app.use('/', ownerSignUp);
 app.use('/', buyerSignIn);
 app.use('/', ownerSignIn);
 app.use('/', buyerSignUp);
-app.use('/', updateProfile)
+app.use('/', orderManage);
+app.use('/', sectionManage);
+app.use('/', menuItemManage);
+app.use('/', buyerDetails);
+app.use('/', restaurantDetails);
+
 // app.post("/ownerSignUp", function(req, res){
 //     console.log(req.body);
 // })

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Container, Row, Col} from 'reactstrap'
+import { Container, Row, Col } from 'reactstrap'
 
 class GettingStarted extends Component {
     constructor(props) {
@@ -12,16 +12,39 @@ class GettingStarted extends Component {
 
     render() {
         return (
-            <Container>
-                <Row>
-                    <Col xs={5}><a href="/BuyerSignUp" className="c-button">Buyer Sign Up</a></Col>
-                    <br/>
-                    <Col xs={5}><a href="/OwnerSignUp" className="c-button">Owner Sign Up</a></Col>
-                    <br/>
-                    <Col xs={5}><a href="/BuyerSignIn" className="c-button">Buyer Sign In</a></Col>
-                    <br/>
-                    <Col xs={5}><a href="/OwnerSignIn" className="c-button">Owner Sign In</a></Col>
-                    <br/>
+            <Container style={{
+                maxWidth: "100%",
+                width: "100%",
+                height: "100%",
+                alignItems: "center"
+            }}>
+                <Row style={{
+                    paddingTop: '150px',
+                    paddingBottom: '250px'
+                }}>
+                    <Col xs={5}><a href="/BuyerSignUp" style={{
+                        fontWeight: '500',
+                        fontSize: '25px',
+                        color: "red",
+                    }}>Buyer Sign Up</a></Col>
+                    <Col xs={5}><a href="/BuyerSignIn" style={{
+                        fontWeight: '500',
+                        fontSize: '25px',   
+                    }}>Buyer Sign In</a></Col>
+                </Row>
+                <Row style={{
+                    marginTop: '15px',
+                    marginBotton: '15px'
+                }}>
+                    <Col xs={5}><a href="/OwnerSignUp" style={{
+                        fontWeight: '500',
+                        fontSize: '25px',
+                        color: "red",
+                    }}>Owner Sign Up</a></Col>
+                    <Col xs={5}><a href="/OwnerSignIn" style={{
+                        fontWeight: '500',
+                        fontSize: '25px',
+                    }}>Owner Sign In</a></Col>
                 </Row>
             </Container>
         )

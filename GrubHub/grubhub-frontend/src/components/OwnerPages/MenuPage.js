@@ -6,6 +6,8 @@ import Col from 'react-bootstrap/Col';
 import axios from 'axios';
 import OwnerMenuItemCard from './OwnerMenuItemCard';
 import { CardDeck } from 'reactstrap';
+import MenuItemAddModal from './MenuItemAddModal';
+import cookie from 'react-cookies';
 
 export class MenuPage extends Component {
 
@@ -20,16 +22,54 @@ export class MenuPage extends Component {
             isBreakfastPresent: false,
             isAppetizersPresent: false,
             restaurantId: 1,
+            showMenuItemAddModal: false,
         }
 
         this.onDeleteSectionHandler = this.onDeleteSectionHandler.bind(this);
         this.onAddSectionHandler = this.onAddSectionHandler.bind(this);
         this.onAddItemsHandler = this.onAddItemsHandler.bind(this);
         this.handleDeleteItem = this.handleDeleteItem.bind(this);
+        this.closeMenuItemAddModal = this.closeMenuItemAddModal.bind(this);
+        this.saveMenuItemAddModal = this.saveMenuItemAddModal.bind(this);
+    }
+
+    closeMenuItemAddModal = () => {
+        this.setState({
+            showMenuItemAddModal: false,
+        })
+    }
+
+    saveMenuItemAddModal = (addItemState) => {
+        console.log(addItemState);
+        const data = {
+            restaurantId: cookie.load('cookie2'),
+            menuItemName: addItemState.itemName,
+            menuItemDesc: addItemState.itemDesc,
+            menuItemImage: addItemState.itemImage,
+            menuItemPrice: addItemState.itemPrice,
+            menuItemSection: addItemState.itemSection,
+        }
+        axios.post('http://localhost:3001/restaurantMenu', data)
+        .then(response => {
+            if (response.status === 200) {
+                console.log('successfully added menu item to restaurants menu' + response.data.menuItemUniqueId);
+                console.log(response.data.responseMessage);
+            } else {
+                console.log("Status Code: ", response.status);
+                console.log(response.data.responseMessage);
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+        this.setState({
+            showMenuItemAddModal: false,
+        })
     }
 
     onAddItemsHandler = () => {
-
+        this.setState({
+            showMenuItemAddModal: true,
+        })
     }
 
     onAddSectionHandler = () => {
@@ -43,6 +83,8 @@ export class MenuPage extends Component {
         let breakfastList = [];
         let lunchList = [];
         let appetizerList = [];
+        let menu = undefined;
+        let sections = undefined;
         axios.defaults.withCredentials = true;
         axios.delete('http://localhost:3001/restaurantMenu', {
             params: {
@@ -52,8 +94,7 @@ export class MenuPage extends Component {
             console.log("Response on delete menu Item details: ");
             console.log(response.data.responseMessage);
             if (response.status === 200) {
-                console.log("Successfully deleted Order");
-                // window.alert("Successfully deleted order from " + anOrderData.buyerName);
+                console.log("Successfully deleted menu Item");
             } else {
                 console.log("Status Code: ", response.status);
                 console.log(response.data.responseMessage);
@@ -68,10 +109,12 @@ export class MenuPage extends Component {
                 }
             })
                 .then(response => {
+
                     if (response.status === 200) {
                         console.log('response from DB: ');
                         console.log(response.data);
-                        let menu = response.data.menu;
+                        menu = response.data.menu;
+                        sections = response.data.sections;
                         for (let index = 0; index < menu.length; index++) {
                             if (menu[index].itemSection === "Breakfast") {
                                 breakfastList.push(menu[index]);
@@ -85,23 +128,26 @@ export class MenuPage extends Component {
                         console.log("Status Code: ", response.status);
                         console.log(response.data.responseMessage);
                     }
+                    this.setState({
+                        lunch: lunchList,
+                        breakfast: breakfastList,
+                        appetizer: appetizerList,
+                        isBreakfastPresent: sections.isBreakfast,
+                        isAppetizersPresent: sections.isAppetizer,
+                        isLunchPresent: sections.isLunch,
+                    })
                 }).catch(error => {
                     console.log(error);
                 });
+
         }).catch(error => {
             console.log(error);
         });
-
-        this.setState({
-            lunch: lunchList,
-            breakfast: breakfastList,
-            appetizer: appetizerList,
-        })
     }
 
     componentDidMount = () => {
         // Load menu Items from Database and setState
-        let restaurantId = this.props.restaurantId;
+        let restaurantId = cookie.load('cookie2');
         console.log("Getting details of restaurant with ID: " + restaurantId);
         axios.defaults.withCredentials = true;
         axios.get('http://localhost:3001/menu', {
@@ -146,7 +192,7 @@ export class MenuPage extends Component {
                 console.log(error);
             });
         this.setState({
-            restaurantId: this.props.restaurantId,
+            restaurantId: cookie.load('cookie2'),
         })
     }
 
@@ -157,8 +203,10 @@ export class MenuPage extends Component {
     render() {
         let MenuSectionsDOM = [];
         let count = 0;
+        console.log(this.state);
         // Go through appetizers first
         while (count < 3) {
+            console.log(count);
             let sectionData = [];
             let sectionName = "Breakfast";
             let currentSection = this.state.breakfast;
@@ -211,10 +259,10 @@ export class MenuPage extends Component {
             sectionData.push(
                 <Button variant="success" size="sm" onClick={this.onAddItemsHandler}
                     style={{
-                        width: "175px",
+                        width: "250px",
                         fontSize: "20px",
                         marginLeft: '5px',
-                    }}>Add Items</Button>
+                    }}>Add Items to {sectionName} </Button>
 
             )
             if (currentSection.length > 0) {
@@ -261,7 +309,8 @@ export class MenuPage extends Component {
                         </div>
                     </Row>
                 );
-            } else if (isCurrentSectionPresent === true) {
+            } else if (isCurrentSectionPresent === 1) {
+                console.log("Handling section with no items " + isCurrentSectionPresent);
                 MenuSectionsDOM.push(
                     <Row style={{
                         marginTop: '5px',
@@ -303,8 +352,9 @@ export class MenuPage extends Component {
                         </div>
                     </Row>
                 );
-            } else if (isCurrentSectionPresent === false) {
+            } else if (isCurrentSectionPresent === 0) {
                 // Add Section Button
+                console.log("providing add section " + isCurrentSectionPresent);
                 MenuSectionsDOM.push(
                     <Row style={{
                         marginTop: '5px',
@@ -342,6 +392,13 @@ export class MenuPage extends Component {
             }
             count = count + 1;
         }
+        let MenuItemAddModalDOM = [];
+        if (this.state.showMenuItemAddModal) {
+            MenuItemAddModalDOM = <MenuItemAddModal
+            onClose={this.closeMenuItemAddModal}
+            onSave = {this.saveMenuItemAddModal}
+        />;
+        }
 
         return (
             <div style={{
@@ -356,6 +413,7 @@ export class MenuPage extends Component {
                     maxWidth: "100%",
                 }}>
                     {MenuSectionsDOM}
+                    {MenuItemAddModalDOM}
                 </Container>
             </div>
         )

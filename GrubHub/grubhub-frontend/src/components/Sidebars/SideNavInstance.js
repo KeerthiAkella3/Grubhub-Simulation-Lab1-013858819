@@ -45,7 +45,7 @@ export class SideNavInstance extends Component {
 
         return (
             <div style={sideNavDiv}>
-                <Sidenav defaultOpenKeys={['3', '4']} activeKey="1">
+                <Sidenav defaultOpenKeys={['3', '4']} activeKey={this.props.defaultActiveKey}>
                     <Sidenav.Body>
                         <Nav>
                             <Nav.Item eventKey="1">
@@ -63,7 +63,7 @@ export class SideNavInstance extends Component {
                             <Nav.Item eventKey="4" href="#" onClick={this.onProfileClickHandler} icon={<Icon icon="user-info" />}>
                                 Profile
                             </Nav.Item>
-                            <Nav.Item eventKey="4" href="#" onClick={this.logout} icon={<Icon icon="sign-out" />}>
+                            <Nav.Item eventKey="5" href="#" onClick={this.logout} icon={<Icon icon="sign-out" />}>
                                 Logout
                             </Nav.Item>
                             {/* <Dropdown eventKey="3" title="Advanced" icon={<Icon icon="magic" />}>

@@ -9,9 +9,9 @@ import ShoppingCart from './ShoppingCart';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import cookie from 'react-cookies'
-
+import cookie from 'react-cookies';
 import PlaceOrder from './PlaceOrder';
+import BuyerNavBar from './BuyerNavBar';
 
 export class BuyerDetailsPage extends Component {
 
@@ -365,15 +365,18 @@ export class BuyerDetailsPage extends Component {
 
             return (
                 <div>
+                    <BuyerNavBar />
                     <RestaurantBanner restaurantName={restaurantName} />
                     <Container>
                         <Row>
-                            <Col>
+                            <Col sm={7}>
                                 <Table responsive>
                                     {MenuDOM}
                                 </Table>
                             </Col>
-                            {ShoppingCartDOM}
+                            <Col sm={5}>
+                                {ShoppingCartDOM}
+                            </Col>
                         </Row>
                     </Container>
                     {ModalQuantitySelector}

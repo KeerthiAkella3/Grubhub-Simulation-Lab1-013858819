@@ -5,8 +5,7 @@ import OrderPage from './OrderPage';
 import ProfilePage from './ProfilePage';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import cookie from 'react-cookies'
-
+import cookie from 'react-cookies';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -19,6 +18,8 @@ export class CompOwnerPage extends Component {
             pageName: "Orders",
             restaurantId: undefined,
         }
+        this.handleSideBarSelect = this.handleSideBarSelect.bind(this);
+        this.rerenderPage = this.rerenderPage.bind(this);
     }
 
 
@@ -46,19 +47,30 @@ export class CompOwnerPage extends Component {
         }
     }
 
+    rerenderPage = (e, pageName) => {
+        console.log("Refreshing Owner's Home Page");
+        console.log(pageName);
+        this.setState({
+            pageName: pageName
+        })
+    }
+
     render() {
         const isOrdersPage = (this.state.pageName === "Orders");
         const isMenuPage = (this.state.pageName === "Menu");
         const isProfilePage = (this.state.pageName === "Profile");
-        // TODO : Get restaurant ID from cookie
-        let restaurantId = this.state.restaurantId;
-        let page = <OrderPage restaurantId={restaurantId}/>;
+        let activeKey = "1";
+        let restaurantId = cookie.load('cookie2');
+        let page = <OrderPage refreshPage={this.rerenderPage} restaurantId={restaurantId}/>;
         if (isOrdersPage) {
-            page = <OrderPage restaurantId={restaurantId}/>;
+            activeKey = "2";
+            page = <OrderPage refreshPage={this.rerenderPage} restaurantId={restaurantId}/>;
         } else if (isMenuPage) {
-            page = <MenuPage restaurantId={restaurantId}/>;
+            activeKey = "3";
+            page = <MenuPage refreshPage={this.rerenderPage} restaurantId={restaurantId}/>;
         } else if (isProfilePage) {
-            page = <ProfilePage restaurantId={restaurantId}/>;
+            activeKey = "4";
+            page = <ProfilePage refreshPage={this.rerenderPage} restaurantId={restaurantId}/>;
         }
 
 
@@ -108,12 +120,14 @@ export class CompOwnerPage extends Component {
             width: "100%",
             height: "100%",
         }
-
+        // console.log("Rendering page with ");
+        // console.log('activekey = ' + activeKey);
+        // console.log(page);
         return (
             <div style={ownerPageDiv}>
                 <div style={grubhubContainer}>
                     <Row style={grubhubRow}>
-                        <Col style={sideBarCol}><SideNavInstance onOptionClick={this.handleSideBarSelect} /> </Col>
+                        <Col style={sideBarCol}><SideNavInstance onOptionClick={this.handleSideBarSelect} defaultActiveKey = {activeKey} /> </Col>
                         {/* Based on what user clicks in sidebar, we need to display appropriate component. Default is Orders page */}
                         <Col className={mainPageCol}>{page}</Col>
                     </Row>

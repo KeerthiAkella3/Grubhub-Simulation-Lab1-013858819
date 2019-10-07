@@ -1,12 +1,11 @@
 const express = require('express');
-
-const router = express.Router();
-
-var fs = require('fs');
-const multer = require('multer');
-const mountRoutes = require('.');
 const LoginSignUpDB = require('../database/LoginSignUpDB');
 const LoginSignUpDBObj = new LoginSignUpDB();
+var app = express();
+app.set('view engine', 'ejs');
+const router = express.Router();
+var fs = require('fs');
+const multer = require('multer');
 const path = require('path');
 
 const storage = multer.diskStorage({
@@ -22,32 +21,30 @@ const storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
-
-router.post('/updateProfile', function (req, res) {
+router.post('/updateBuyerProfile', function (req, res) {
   console.log("Inside profile put request");
   console.log("Request Body in update buyer:");
   console.log(req.body);
-  let emailId = req.body.emailId;
-  let table = req.body.table;
-  let id = req.body.id
-
-  console.log("email Id and tablename " + req.body.emailId + "  " + req.body.table)
-
+  let buyerEmailId = req.body.buyerEmailId;
+  let buyerId = req.body.buyerId
+  console.log("email Id and tablename " + buyerEmailId + "  buyerTable")
   var queryResult = [];
   var inputData = {
     "buyerName": req.body.buyerName,
-    "emailId": req.body.emailId,
-    "phonenumber": req.body.phoneNumber,
-    "Address": req.body.Address,
-    "id": req.body.id
-
+    "buyerEmailId": req.body.buyerEmailId,
+    "buyerPhone": req.body.buyerPhone,
+    "buyerAddress": req.body.buyerAddress,
+    "buyerId": req.body.buyerId,
   }
-  console.log("in input data update buyer   " + inputData.buyerName)
+  console.log("in input data update buyer " + inputData.buyerName);
   const getProfileData = async () => {
-    queryResult = await LoginSignUpDBObj.updateBuyer(table, id, inputData);
+    queryResult = await LoginSignUpDBObj.updateBuyer("buyerTable", buyerId, inputData);
     if (queryResult) {
       console.log("Data updated!");
-      res.status(200).json(queryResult);
+      res.status(200).json({
+        responseMessage: 'Successfully updated profile of ' + inputData.buyerName,
+        updateResult: queryResult
+      });
     }
     else {
       res.status(400).json({ responseMessage: 'Record not found' });
@@ -68,23 +65,23 @@ router.post('/updateOwner', function (req, res) {
   console.log(req.body);
   let emailId = req.body.emailId;
   let table = req.body.table;
-  let id = req.body.id
+  let restaurantId = req.body.restaurantId
 
   console.log("email Id and tablename " + req.body.emailId + "  " + req.body.table)
 
   var queryResult = [];
   var inputData = {
-    "restaurantName": req.body.ownerName,
-    "restaurantEmailId": req.body.emailId,
-    "restaurantPhone": req.body.phoneNumber,
-    "restaurantAddress": req.body.Address,
-    "restaurantCuisine": req.body.cuisine,
-    "restaurantId": req.body.id
-
+    "restaurantName": req.body.restaurantName,
+    "restaurantEmailId": req.body.restaurantEmailId,
+    "restaurantPhone": req.body.restaurantPhone,
+    "restaurantAddress": req.body.restaurantAddress,
+    "restaurantCuisine": req.body.restaurantCuisine,
+    "restaurantId": req.body.restaurantId
   }
-  console.log("in input data update buyer   " + inputData.ownerName)
+
+  console.log("in input data update buyer   " + inputData.restaurantName)
   const getProfileData = async () => {
-    queryResult = await LoginSignUpDBObj.updateOwner(table, id, inputData);
+    queryResult = await LoginSignUpDBObj.updateOwner(table, restaurantId, inputData);
     if (queryResult) {
       console.log("Data updated!");
       res.status(200).json(queryResult);
@@ -101,53 +98,6 @@ router.post('/updateOwner', function (req, res) {
     res.status(500).json({ responseMessage: 'Database not responding' });
   }
 });
-
-
-router.get('/profile', function (req, res) {
-  console.log("Inside profile get request");
-  console.log("Request params:");
-  console.log(req.query);
-  let emailId = req.query.emailId;
-  var queryResult = [];
-  let table = req.query.table;
-  const getProfileData = async () => {
-    if (table === "restaurantTable") {
-      queryResult = await LoginSignUpDBObj.checkIfRestaurantExists(table, emailId);
-    } else {
-      queryResult = await LoginSignUpDBObj.checkIfBuyerExists(table, emailId);
-    }
-    if (queryResult[0]) {
-      if (table === "restaurantTable") {
-        if (queryResult[0].restaurantEmailId != null) {
-          console.log("Data Found!");
-          let obj = queryResult[0];
-          delete obj['password'];
-          Object.keys(obj).forEach(k => (!obj[k] && obj[k] !== undefined) && delete obj[k]);
-          res.status(200).json(obj);
-        }
-      } else {
-        if (queryResult[0].buyerEmailId != null) {
-          console.log("Data Found!");
-          let obj = queryResult[0];
-          delete obj['password'];
-          Object.keys(obj).forEach(k => (!obj[k] && obj[k] !== undefined) && delete obj[k]);
-          res.status(200).json(obj);
-        }
-      }
-    }
-    else {
-      res.status(400).json({ responseMessage: 'Record not found' });
-    }
-  }
-  try {
-    getProfileData();
-  }
-  catch (err) {
-    console.log(err);
-    res.status(500).json({ responseMessage: 'Database not responding' });
-  }
-});
-
 
 router.post('/img/upload', upload.single('selectedFile'), function (req, res) {
   console.log("Inside post profile img");
@@ -197,10 +147,12 @@ router.get('/profile/img', function (req, res) {
     }
     console.log("queryResult ");
     console.log(queryResult.image)
+    
     function base64_encode(file) {
       var bitmap = fs.readFileSync(file);
       return new Buffer(bitmap).toString('base64');
     }
+
     if (queryResult) {
       if (table === "restaurantTable") {
         filename = queryResult.restaurantImage;
@@ -209,12 +161,17 @@ router.get('/profile/img', function (req, res) {
       }
       console.log("filename")
       console.log(filename);
-      let filePath = path.join(__dirname, "../uploads/profilePictures", filename);
-      console.log("file path.." + filePath);
-      //let filePath = "/Users/Keerthy/Desktop/Fall/273/HW/Lab1/Lab-013858819/Lab1-013858819/GrubHub/grubhub-backend/uploads/profilePictures/" + filename;
-      var base64str = base64_encode(filePath);
-      console.log(base64str);
-      res.status(200).json({ base64str: base64str });
+      if (filename === null || filename === undefined) {
+          res.status(400).json({ responseMessage: 'Record not found' });  
+      } else {
+        let filePath = path.join(__dirname, "../uploads/profilePictures", filename);
+        console.log("file path.." + filePath);
+        //let filePath = "/Users/Keerthy/Desktop/Fall/273/HW/Lab1/Lab-013858819/Lab1-013858819/GrubHub/grubhub-backend/uploads/profilePictures/" + filename;
+        var base64str = base64_encode(filePath);
+        // var base64str = filePath;
+        // console.log(base64str);
+        res.status(200).json({ base64str: base64str });
+      }
     }
     else {
       res.status(400).json({ responseMessage: 'Record not found' });
@@ -229,6 +186,40 @@ router.get('/profile/img', function (req, res) {
   }
 });
 
+router.get('/buyerDetails', function (req, res) {
+  let buyerId = req.query.buyerId;
+  var buyerDetailsResult = [];
 
+  const getBuyerDetails = async () => {
+    buyerDetailsResult = await LoginSignUpDBObj.getBuyerDetails("buyerTable", buyerId);
+    if (buyerDetailsResult) {
+      let detailsResult = buyerDetailsResult[0];
+      if (detailsResult) {
+        buyerDetails = {
+          buyerId: buyerId,
+          buyerName: detailsResult.buyerName,
+          buyerEmailId: detailsResult.buyerEmailId,
+          buyerPhone: detailsResult.buyerPhone,
+          buyerAddress: detailsResult.buyerAddress,
+        }
+      }
+      res.status(200).json({
+        responseMessage: 'Found one or more buyer that matched',
+        buyerDetails: buyerDetails,
+      })
+    }
+  }
+
+  try {
+    getBuyerDetails();
+  }
+  catch (err) {
+    console.log(err);
+    res.status(500).json({
+      responseMessage: 'Database not responding',
+      buyerDetails: undefined,
+    });
+  }
+});
 
 module.exports = router;

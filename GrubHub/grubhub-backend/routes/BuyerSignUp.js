@@ -40,7 +40,7 @@ router.post('/buyerSignUp',function (req, res) {
         "buyerEmailId": req.body.emailId,
         "buyerPassword": encryptedPassword,
         "buyerPhone": req.body.phoneNumber,
-        "buyerAddress": req.body.zipcode
+        "buyerAddress": req.body.Address,
       }
       queryResult = await LoginSignUpDBObj.createNewUser("buyerTable",inputData);
       console.log("User Added");

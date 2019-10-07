@@ -26,16 +26,6 @@ export class OrderBrief extends Component {
         })
     }
 
-    /**
-     *  restaurantId: "1", restaurantEmailId: "dusita_thai@gmail.com", buyerEmailId: "satish.inampudi@gmail.com", buyerAddress: "1 seattle way, hollywood, ca 94086", orderItemsInfo: Array(1), …}
-        buyerAddress:  "1 seattle way, hollywood, ca 94086"
-        buyerEmailId: "satish.inampudi@gmail.com"
-        buyerName: "satish"
-        orderItemsInfo: [{…}]
-        restaurantEmailId: "dusita_thai@gmail.com"
-        restaurantId: "1"
-        uniqueOrderId: 2
-     */
     cancelOrder = () => {
         let anOrderData = this.state.anOrderData;
         axios.delete('http://localhost:3001/deleteOrder', {
@@ -47,7 +37,6 @@ export class OrderBrief extends Component {
             console.log(response.data.buyerDetails);
             if (response.status === 200) {
                 console.log("Successfully deleted Order");
-                window.alert("Successfully deleted order from " + anOrderData.buyerName);
             } else {
                 console.log("Status Code: ", response.status);
                 console.log(response.data.responseMessage);
@@ -179,7 +168,7 @@ export class OrderBrief extends Component {
                             textAlignLast: "right",
                             paddingRight: "25px",
                         }}>
-                            Total Price: {netTotalPrice}
+                            Total Price: {parseFloat(netTotalPrice).toFixed(2)}
                         </Card.Text>
                         <Container style={{
                             width: "100%",

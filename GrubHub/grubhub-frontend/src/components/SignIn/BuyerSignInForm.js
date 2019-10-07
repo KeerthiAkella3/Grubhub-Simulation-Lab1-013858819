@@ -14,12 +14,12 @@ class BuyerSignInForm extends Component {
         this.state = {
             emailId: "",
             password: "",
-            SignedUpFlag: false
+            SignedUpFlag: false,
+            message: "",
         }
 
         this.emailIdChangeHandler = this.emailIdChangeHandler.bind(this)
         this.passwordChangeHandler = this.passwordChangeHandler.bind(this)
-
         this.submitBuyerLogin = this.submitBuyerLogin.bind(this)
     }
 
@@ -33,7 +33,7 @@ class BuyerSignInForm extends Component {
             password: e.target.value
         })
     }
-    
+
     submitBuyerLogin = (e) => {
         console.log("in submit Login")
         e.preventDefault();
@@ -41,9 +41,6 @@ class BuyerSignInForm extends Component {
             emailId: this.state.emailId,
             password: this.state.password
         }
-        this.setState({
-            message: "Invalid Credentials"
-        })
         console.log("data is..")
         console.log(data);
         axios.defaults.withCredentials = true;
@@ -52,14 +49,14 @@ class BuyerSignInForm extends Component {
                 console.log("Status Code : ", response.status);
                 console.log("Response from Sign Up " + response);
                 console.log(response);
-                if (response.data.responseMessage === 'User authenticated!') {
+                if (response.data.validUser === true) {
                     this.setState({
                         SignedUpFlag: true,
                         message: "Buyer Logged in successfully"
                     })
                 } else {
                     this.setState({
-                        SignedUpFlag: true,
+                        SignedUpFlag: false,
                         message: "Invalid Credentials"
                     })
                 }
@@ -69,43 +66,41 @@ class BuyerSignInForm extends Component {
     render() {
         var nextpage = null
         if (this.state.SignedUpFlag === true) {
-            nextpage = <Redirect to="/buyerHomePage" />
+            return <Redirect to="/buyerHomePage" />
         }
         return (
             <div>
-                {nextpage}
                 <br></br>
                 <br></br>
                 <br></br>
-                <br></br>
-
-                <center>
-                <Card style={{ width: '22rem' }}>
-                <br></br>
-                <h4>Sign in with your Grubhub account</h4>
                 <br></br>
                 <center>
-                <Form style={{ width: '18rem' }}>
-                    <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Email address</Form.Label>
-                        <Form.Control type="email" placeholder="Enter email" required  name="emailId" onChange={this.emailIdChangeHandler}/>
-                    </Form.Group>
+                    <Card style={{ width: '22rem' }}>
+                        <br></br>
+                        <h4>Sign in with your Grubhub account</h4>
+                        <br></br>
+                        <center>
+                            <Form style={{ width: '18rem' }}>
+                                <Form.Group controlId="formBasicEmail">
+                                    <Form.Label>Email address</Form.Label>
+                                    <Form.Control type="email" placeholder="Enter email" required name="emailId" onChange={this.emailIdChangeHandler} />
+                                </Form.Group>
 
-                    <Form.Group controlId="formBasicPassword">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Password" required  name="password" onChange={this.passwordChangeHandler}/>
-                    </Form.Group>
-                    <Form.Text variant="danger">
-                    {this.state.message}
-                    </Form.Text>
-                    <Button variant="danger" type="submit"onClick={this.submitBuyerLogin}>
-                        Sign in
-                    </Button>
-                    <br></br>
-                </Form>
-                <br></br>
-                </center>
-                </Card>
+                                <Form.Group controlId="formBasicPassword">
+                                    <Form.Label>Password</Form.Label>
+                                    <Form.Control type="password" placeholder="Password" required name="password" onChange={this.passwordChangeHandler} />
+                                </Form.Group>
+                                <Form.Text variant="danger">
+                                    {this.state.message}
+                                </Form.Text>
+                                <Button variant="danger" type="submit" onClick={this.submitBuyerLogin}>
+                                    Sign in
+                                </Button>
+                                <br></br>
+                            </Form>
+                            <br></br>
+                        </center>
+                    </Card>
                 </center>
                 {/* <form>
 
